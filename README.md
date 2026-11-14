@@ -106,3 +106,9 @@ Built by Odun Akinmoladun, Senior Product Manager. Designed in wireframes first,
 |---|---|
 | ![Market position](wireframes/market.png) | ![Sales view](wireframes/sales.png) |
 
+Added in v2:
+
+| Product health | Documents |
+|---|---|
+| ![Product health](wireframes/health.png) | ![Documents](wireframes/documents.png) |
+
