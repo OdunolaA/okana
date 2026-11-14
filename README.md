@@ -66,6 +66,3 @@ The backlog lives on the [Okana roadmap](../../projects) board. `scripts/setup-p
 4. v2 pages: Geo position, Product health, Transformation readiness, Sales status, Documents
 5. Sign-in with Leadership and Sales roles
 
-## About
-
-Built by Odun Akinmoladun, Senior Product Manager. Designed in wireframes first, then prototyped with AI-assisted development (Claude).
