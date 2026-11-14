@@ -122,7 +122,7 @@ async function main() {
   }
 
   // Roadmap from epics labelled now / next / later
-  const epics = await searchJql(`project = "${PROJECT}" AND issuetype = Epic AND labels in (now, next, later) ORDER BY duedate ASC`, "summary,labels,duedate");
+  const epics = await searchJql(`project = "${PROJECT}" AND issuetype = Epic AND labels in ("now", "next", "later") ORDER BY duedate ASC`, "summary,labels,duedate");
   const roadmap = epics.map((e) => {
     const labels = (e.fields.labels || []).map((l) => l.toLowerCase());
     const lane = ["now", "next", "later"].find((l) => labels.includes(l)) || "later";
