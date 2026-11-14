@@ -1,0 +1,66 @@
+# Okana: syncs Jira data every hour and publishes the app to GitHub Pages.
+# Runs on every push to main, every hour, and on demand (Actions tab > "Okana sync and deploy" > Run workflow).
+name: Okana sync and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 * * * *"   # every hour at :17
+  workflow_dispatch:
+
+permissions:
+  contents: write    # to save the synced data/jira.json back to the repository
+  pages: write       # to publish GitHub Pages
+  id-token: write    # required by the Pages deploy action
+
+concurrency:
+  group: okana-pages
+  cancel-in-progress: false
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync Jira
+        if: github.event_name != 'push'
+        continue-on-error: true   # if Jira is down, still publish the site with the last good data
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}
+          JIRA_BOARD_ID: ${{ vars.JIRA_BOARD_ID }}
+          JIRA_POINTS_FIELD: ${{ vars.JIRA_POINTS_FIELD }}
+        run: node scripts/fetch-jira.mjs
+
+      - name: Save synced data
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "okana-bot"
+          git config user.email "okana-bot@users.noreply.github.com"
+          if [ -d data ]; then git add data; fi
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "Sync Jira data"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

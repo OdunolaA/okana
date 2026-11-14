@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Okana</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+/* Layout: navy top bar + section tabs; each section is a grid of cards that collapses to one column on phones. */
+:root{
+  --bg:#F4F8F9; --surface:#FFFFFF; --ink:#0F2A3A; --muted:#4F5D6B; --line:#D5DEE4;
+  --aqua:#0E7C86; --aqua-soft:#DDF1F2; --aqua-ink:#0B5F67;
+  --blue:#1E4FA8; --blue-soft:#E2EAF8; --blue-ink:#1A3F86;
+  --amber-soft:#FCEFDD; --amber-ink:#8A4A08; --grey-soft:#EEF1F4; --grey-mark:#8C9AA6;
+  --rag-g:#2E9E5B; --rag-g-soft:#DDF3E4; --rag-g-ink:#17663A; --rag-a:#E0A100; --rag-a-soft:#FCF0D2; --rag-a-ink:#7A5200; --rag-r:#D64535; --rag-r-soft:#FBE3E1; --rag-r-ink:#A3261B;
+  --bar:#0F2A3A; --bar-ink:#FFFFFF; --bar-muted:#B9CAD5; --bar-line:#3B5566;
+  --display:"Space Grotesk","Inter",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1A24; --surface:#12242F; --ink:#E6EEF2; --muted:#9FB0BC; --line:#24394A;
+  --aqua:#2BB3BD; --aqua-soft:#0F3B40; --aqua-ink:#7FD9DF;
+  --blue:#5B8DEF; --blue-soft:#17294A; --blue-ink:#A9C2F5;
+  --amber-soft:#3A2A12; --amber-ink:#F0B970; --grey-soft:#1B2C38; --grey-mark:#6F8291;
+  --rag-g:#4CC27E; --rag-g-soft:#123524; --rag-g-ink:#8FE0B0; --rag-a:#F2BE3A; --rag-a-soft:#3A2F10; --rag-a-ink:#F5D27E; --rag-r:#F06A5B; --rag-r-soft:#3D1A17; --rag-r-ink:#F7A79E;
+  --bar:#07131B; --bar-ink:#FFFFFF; --bar-muted:#9FB0BC; --bar-line:#24394A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1A24; --surface:#12242F; --ink:#E6EEF2; --muted:#9FB0BC; --line:#24394A;
+  --aqua:#2BB3BD; --aqua-soft:#0F3B40; --aqua-ink:#7FD9DF;
+  --blue:#5B8DEF; --blue-soft:#17294A; --blue-ink:#A9C2F5;
+  --amber-soft:#3A2A12; --amber-ink:#F0B970; --grey-soft:#1B2C38; --grey-mark:#6F8291;
+  --rag-g:#4CC27E; --rag-g-soft:#123524; --rag-g-ink:#8FE0B0; --rag-a:#F2BE3A; --rag-a-soft:#3A2F10; --rag-a-ink:#F5D27E; --rag-r:#F06A5B; --rag-r-soft:#3D1A17; --rag-r-ink:#F7A79E;
+  --bar:#07131B; --bar-ink:#FFFFFF; --bar-muted:#9FB0BC; --bar-line:#24394A; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1280px;margin:0 auto}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.side{background:var(--bar);color:var(--bar-ink);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px;padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(16px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));overflow-y:auto;z-index:15}
+.logo{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:20px;padding:0 6px}
+.logo svg{display:block}
+.logo .beat{transform-origin:30.5px 16px}
+@media (prefers-reduced-motion:no-preference){.logo .beat{animation:beat 1.6s ease-in-out infinite}}
+@keyframes beat{0%,60%,100%{transform:scale(1);opacity:1}20%{transform:scale(1.7);opacity:.6}35%{transform:scale(1.1);opacity:1}}
+.fieldlabel{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bar-muted);padding:0 6px;margin-bottom:6px;display:block}
+.product{font:inherit;font-size:14px;color:var(--bar-ink);background:rgba(255,255,255,.06);border:1px solid var(--bar-line);border-radius:6px;padding:9px 10px;width:100%}
+.product option{color:#0F2A3A}
+.nav{display:flex;flex-direction:column;gap:2px}
+.navlabel{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bar-muted);padding:12px 8px 6px}
+.nav a,.nav .soon{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 10px;border-radius:6px;color:var(--bar-ink);text-decoration:none;font-size:14px}
+.nav a:hover{background:rgba(255,255,255,.07)}
+.nav a[aria-current="page"]{background:rgba(43,196,206,.16);color:#7FE1E8;font-weight:600;box-shadow:inset 3px 0 0 #2BC4CE}
+.nav svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav .soon{color:var(--bar-muted);opacity:.75}
+.nav .soon em{margin-left:auto;font-style:normal;font-size:10px;letter-spacing:.08em;border:1px solid var(--bar-line);border-radius:8px;padding:1px 6px}
+.badge{margin-left:auto;font-size:11px;font-weight:700;background:#2BC4CE;color:#0F2A3A;border-radius:9px;padding:1px 7px}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--bar-line);padding-top:14px}
+.side .seg{border-color:var(--bar-line);display:flex}
+.side .seg button{color:var(--bar-ink);flex:1}
+.side .seg button[aria-pressed="true"]{background:var(--aqua);color:#fff}
+.side .tip{color:var(--bar-muted)}
+.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.themes{grid-template-columns:minmax(0,1fr)}}
+.themeopt{font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:10px;cursor:pointer;text-align:left}
+.themeopt[aria-pressed="true"]{border-color:var(--aqua);box-shadow:0 0 0 3px var(--aqua-soft)}
+.themeopt .pv{display:flex;height:84px;border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.themeopt .pv i{display:block}
+.themeopt b{display:flex;justify-content:space-between;align-items:center}
+.check{width:18px;height:18px;border-radius:9px;border:2px solid var(--line);display:inline-block}
+.themeopt[aria-pressed="true"] .check{border-color:var(--aqua);background:var(--aqua);box-shadow:inset 0 0 0 3px var(--surface)}
+.side .tip::after{top:auto;bottom:calc(100% + 8px);left:auto;right:-4px;max-width:200px}
+.content{min-width:0;display:flex;flex-direction:column}
+.pagebar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--line);padding-block:12px}
+.pagebar .in{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.crumb{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.crumb small{font-size:12px;color:var(--muted)}
+.crumb b{font-family:var(--display);font-size:20px}
+.menu{display:none;font:inherit;background:none;border:1px solid var(--line);border-radius:6px;width:44px;height:44px;color:var(--ink);cursor:pointer;align-items:center;justify-content:center}
+.menu svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.spacer{flex:1}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{font:inherit;font-size:13px;color:var(--ink);background:transparent;border:0;padding:7px 12px;cursor:pointer;min-height:36px}
+.seg button[aria-pressed="true"]{background:var(--blue);color:#fff;font-weight:600}
+.updated{font-size:12px;color:var(--muted)}
+.linkbtn{font:inherit;font-size:12px;background:none;border:0;color:var(--blue);cursor:pointer;padding:0;text-decoration:underline}
+.scrim{position:fixed;inset:0;background:rgba(5,15,22,.45);z-index:14}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:fixed;left:0;top:0;bottom:0;height:auto;width:min(280px,85vw);transform:translateX(-102%);transition:transform .2s ease}
+  .side.open{transform:none}
+  .menu{display:inline-flex}
+}
+main{padding-block:24px 48px}
+.sample{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--amber-soft);color:var(--amber-ink);border-radius:10px;padding:3px 10px;font-weight:600}
+h1{font-family:var(--display);font-size:clamp(24px,3vw,30px);margin:0;line-height:1.1;text-wrap:balance}
+h2{font-size:16px;margin:0;font-weight:600}
+.lede{color:var(--muted);margin:6px 0 0;max-width:68ch;font-size:15px}
+.grid{display:grid;gap:18px}
+.g-main{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g-progress{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr)}
+.g-road{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start}
+.g-mkt{grid-template-columns:minmax(0,1.1fr) minmax(0,3fr)}
+.g-mkt2{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:980px){.g-main,.g-progress,.g-road,.g-mkt,.g-mkt2,.g3{grid-template-columns:minmax(0,1fr)}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.g4,.g5{grid-template-columns:minmax(0,1fr)}}
+.stack{display:flex;flex-direction:column;gap:18px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.big{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.pill{display:inline-block;font-size:12px;font-weight:600;border-radius:10px;padding:3px 10px;white-space:nowrap}
+.p-good{background:var(--aqua-soft);color:var(--aqua-ink)}
+.p-info{background:var(--blue-soft);color:var(--blue-ink)}
+.p-warn{background:var(--amber-soft);color:var(--amber-ink)}
+.p-none{background:var(--grey-soft);color:var(--muted)}
+.rag-g{background:var(--rag-g-soft);color:var(--rag-g-ink)}
+.rag-a{background:var(--rag-a-soft);color:var(--rag-a-ink)}
+.rag-r{background:var(--rag-r-soft);color:var(--rag-r-ink)}
+.pill.rag-g::before,.pill.rag-a::before,.pill.rag-r::before,.dot::before{content:"";display:inline-block;width:8px;height:8px;border-radius:4px;margin-right:6px;vertical-align:1px}
+.rag-g::before,.dot.g::before{background:var(--rag-g)}
+.rag-a::before,.dot.a::before{background:var(--rag-a)}
+.rag-r::before,.dot.r::before{background:var(--rag-r)}
+.ragkey{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.vision{background:linear-gradient(135deg,#0E7C86,#1E4FA8);color:#fff;border:0}
+.vision .eyebrow{color:#CFEFF1}
+.vision p{margin:0;font-size:20px;line-height:1.4}
+.person{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:10px}
+.avatar{width:38px;height:38px;border-radius:19px;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.track{height:12px;background:var(--grey-soft);border-radius:6px;position:relative}
+.track .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#12A1AB,#1E4FA8)}
+.track .mark{position:absolute;top:-4px;width:2px;height:20px;background:var(--ink)}
+.box{border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.col{border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.video{aspect-ratio:16/10;max-width:100%;border-radius:6px;background:linear-gradient(135deg,#0E7C86,#1E4FA8);display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;width:100%}
+.video span{width:40px;height:40px;border-radius:20px;background:#fff;display:flex;align-items:center;justify-content:center}
+.video span::after{content:"";border-left:13px solid #0E7C86;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.c,th.c{text-align:center}
+.mbar{height:8px;background:var(--grey-soft);border-radius:4px;flex:1;min-width:60px}
+.mbar div{height:100%;border-radius:4px}
+.dark{background:var(--bar);color:var(--bar-ink);border:0}
+.dark .muted{color:var(--bar-muted)}
+.btn{font:inherit;font-size:14px;font-weight:600;border:0;border-radius:6px;padding:10px 16px;cursor:pointer;min-height:44px;background:var(--aqua);color:#fff}
+.btn.ghost{background:transparent;color:inherit;border:1px solid currentColor}
+.promise{border-top:5px solid var(--aqua)}
+.promise.next{border-top-color:var(--blue)}
+.promise.no{border-top-color:var(--grey-mark)}
+.timeline{display:flex;flex-direction:column;border-left:3px solid var(--aqua-soft);margin-left:6px}
+.timeline div{display:flex;gap:12px;padding:7px 0;margin-left:-8px}
+.timeline b{width:13px;height:13px;border-radius:7px;background:var(--aqua);border:2px solid var(--surface);flex-shrink:0;margin-top:4px}
+.win{background:var(--rag-g-soft);border-radius:6px;padding:8px 10px}
+.lose{background:var(--amber-soft);border-radius:6px;padding:8px 10px}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.15);padding:20px max(20px,env(safe-area-inset-right,0px)) 20px 20px;padding-top:calc(20px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:12px;z-index:20;overflow-y:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:6px;font-size:13px;z-index:30}
+svg text{font-family:var(--body)}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+.tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:9px;border:1px solid currentColor;background:transparent;color:var(--muted);font:600 11px/1 var(--body);cursor:help;padding:0;vertical-align:middle;flex-shrink:0}
+.tip::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:-8px;width:max-content;max-width:min(270px,80vw);background:var(--ink);color:var(--bg);font:400 12px/1.45 var(--body);letter-spacing:0;text-transform:none;text-align:left;padding:9px 11px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:40;display:none;pointer-events:none}
+.tip.left::after{left:auto;right:-8px}
+.tip:hover::after,.tip:focus::after{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.step{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:14px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:0}
+.num{width:32px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--grey-soft);color:var(--muted)}
+.num.done{background:var(--aqua);color:#fff}
+@media (max-width:560px){.step{grid-template-columns:36px minmax(0,1fr)}.step .pill{grid-column:2;justify-self:start}}
+</style>
+</head>
+<body>
+
+<div class="app">
+<aside class="side" id="side" aria-label="Okana navigation">
+  <span class="logo"><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="okg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2BC4CE"></stop><stop offset="1" stop-color="#3D7BFF"></stop></linearGradient></defs><circle cx="16" cy="16" r="12" fill="none" stroke="url(#okg)" stroke-width="2.4"></circle><path d="M1.5 16 H8.5 L10.8 12.6 L13.6 21.4 L16.6 5.8 L19.6 19.4 L21.6 16 H30.5" fill="none" stroke="var(--bar)" stroke-width="4.6" stroke-linejoin="round" stroke-linecap="round"></path><path d="M1.5 16 H8.5 L10.8 12.6 L13.6 21.4 L16.6 5.8 L19.6 19.4 L21.6 16 H30.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></path><circle class="beat" cx="30.5" cy="16" r="1.8" fill="#2BC4CE"></circle></svg>Okana</span>
+  <div><label class="fieldlabel" for="product">Product</label><select id="product" class="product"><option>Atlas</option></select></div>
+  <nav class="nav" id="tabs" aria-label="Sections">
+    <a href="#setup" data-tab="setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"></path><path d="M3.5 6l1.5 1.5L7 5M3.5 12l1.5 1.5L7 11"></path><circle cx="5" cy="18" r="1.5"></circle></svg>Setup guide<span class="badge" id="setupBadge">3/7</span></a>
+    <a href="#about" data-tab="about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5v.01"></path></svg>About the product</a>
+    <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Product progress</a>
+    <a href="#market" data-tab="market"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg>Market position</a>
+    <span class="navlabel">Coming in v2</span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Geo position<em>V2</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"></path></svg>Product health<em>V2</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"></path></svg>Transformation<em>V2</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg>Sales status<em>V2</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6v18h12V7z"></path><path d="M14 3v4h4M9 13h6M9 17h6"></path></svg>Documents<em>V2</em></span>
+  </nav>
+  <nav class="nav" id="salesNav" aria-label="Sales sections" hidden>
+    <a href="#sales" data-tab="sales" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"></rect><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"></path></svg>Demo prep</a>
+  </nav>
+  <div class="side-foot">
+    <nav class="nav" id="settingsNav" aria-label="Settings"><a href="#settings" data-tab="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings</a></nav>
+    <div style="display:flex;align-items:center;justify-content:space-between"><span class="fieldlabel" style="margin:0">View</span><button type="button" class="tip" aria-label="About the views" data-tip="Leadership view shows full progress and market detail. Sales view shows only what is safe to tell clients. Sales users only see the Sales view.">i</button></div>
+    <div class="seg" role="group" aria-label="View" id="viewSeg">
+      <button type="button" data-view="leadership">Leadership</button>
+      <button type="button" data-view="sales">Sales</button>
+    </div>
+  </div>
+</aside>
+<div class="scrim" id="scrim" hidden></div>
+<div class="content">
+  <header class="pagebar gut">
+    <div class="in">
+      <button type="button" class="menu" id="menuBtn" aria-label="Open navigation" aria-controls="side" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+      <div class="crumb"><small>Atlas</small><b id="pageTitle">Setup guide</b></div>
+      <span class="sample" id="dataBadge">Sample data</span>
+      <span class="spacer"></span>
+      <div class="seg period" role="group" aria-label="Period" id="periodSeg">
+        <button type="button" data-period="week">Week</button>
+        <button type="button" data-period="month">Month</button>
+        <button type="button" data-period="quarter">Quarter</button>
+        <button type="button" data-period="year">Year</button>
+      </div>
+      <span class="updated"><span id="updatedAt">Updated 13 Nov 2026, 14:20</span> · <button type="button" class="linkbtn" id="auditBtn">Audit log</button></span>
+    </div>
+  </header>
+<main class="gut">
+  <div class="wrap" style="display:flex;flex-direction:column;gap:22px">
+    <section id="v-setup" class="stack"></section>
+    <section id="v-settings" class="stack" hidden></section>
+    <section id="v-about" class="stack" hidden></section>
+    <section id="v-progress" class="stack" hidden></section>
+    <section id="v-market" class="stack" hidden></section>
+    <section id="v-sales" class="stack" hidden></section>
+  </div>
+</main>
+</div>
+</div>
+
+<aside class="drawer" id="drawer" hidden aria-label="Audit log">
+  <div class="head"><h2>Audit log</h2><button type="button" class="btn ghost" id="closeDrawer">Close</button></div>
+  <div id="auditList"></div>
+</aside>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+// ---------- Settings ----------
+// Pendo: paste your app's Pendo API key to turn on usage tracking. Leave empty to keep tracking off.
+// EU Pendo accounts use "https://cdn.eu.pendo.io".
+const OKANA_CONFIG = { pendoApiKey: "", pendoCdn: "https://cdn.pendo.io", liveJiraFile: "data/jira.json" };
+
+// ---------- Sample data, shaped like the source systems. ----------
+// jiraAdapter is replaced by live data from data/jira.json when the GitHub Action has synced Jira (see loadLiveJira below).
+const jiraAdapter = {
+  sprint: () => ({ number: 14, goal: "Multi-site dashboard beta", day: 6, length: 10, total: 62, remaining: [62, 56, 50, 44, 38, 33, 27] }),
+  velocity: () => [["S3",38],["S4",41],["S5",40],["S6",44],["S7",46],["S8",45],["S9",48],["S10",52],["S11",50],["S12",57],["S13",59],["S14",58]],
+  roadmap: () => [
+    { name: "Multi-site dashboard", when: "Dec 2026", lane: "now", conf: "High" },
+    { name: "Auto-scheduling", when: "Jan 2027", lane: "now", conf: "High" },
+    { name: "Spare parts forecasting", when: "Q1 2027", lane: "next", conf: "Medium" },
+    { name: "Oracle EAM connector", when: "Q1 2027", lane: "next", conf: "Medium" },
+    { name: "Energy use insights", when: "H2 2027", lane: "later", conf: "Low" },
+    { name: "Offline mobile app", when: "H2 2027", lane: "later", conf: "Low" }
+  ],
+  milestones: () => [
+    ["Multi-site beta", "4 Dec 2026", "On track"], ["First 3 pilot sites live", "18 Dec 2026", "On track"],
+    ["Auto-scheduling GA", "22 Jan 2027", "At risk"], ["ISO 27001 audit", "10 Feb 2027", "On track"], ["DACH launch", "15 Mar 2027", "Not started"]
+  ],
+  releases: () => [["v2.4", "6 Nov", "SAP PM connector"], ["v2.3", "23 Oct", "Mobile alerts"], ["v2.2", "9 Oct", "Model accuracy improvements"]]
+};
+const salesforceAdapter = { arr: () => ({ current: 1.2, goal: 5.0, planToDate: 0.30 }) };
+const reviewsAdapter = {
+  // Complaint themes from competitors' public reviews, matched to Atlas.
+  themes: () => [
+    { theme: "Too many false alarms", quote: "We ignore half the alerts now.", n: 214, status: "solved", answer: "Noise filter (shipped)" },
+    { theme: "Hard to connect to SAP", quote: "Integration took 5 months.", n: 168, status: "solved", answer: "SAP connector (shipped)" },
+    { theme: "No multi-site view", quote: "Can't compare our plants.", n: 131, status: "roadmap", conf: "High", answer: "Dec 2026" },
+    { theme: "Pricing per sensor", quote: "Costs balloon as we scale.", n: 97, status: "none", answer: "Not addressed" },
+    { theme: "Weak mobile app", quote: "Engineers can't use it on the floor.", n: 76, status: "roadmap", conf: "Low", answer: "H2 2027" }
+  ],
+  reviewCount: 1240,
+  // Weekly score runs for Atlas, and the average score of the three competitors on the same method.
+  scoreHistory: {
+    week: { labels: ["6 Nov", "13 Nov"], atlas: [72, 73], market: [66, 66] },
+    month: { labels: ["23 Oct", "30 Oct", "6 Nov", "13 Nov"], atlas: [70, 71, 72, 73], market: [65, 66, 66, 66] },
+    quarter: { labels: ["Aug", "Sep", "Oct", "Nov"], atlas: [69, 70, 72, 73], market: [64, 65, 65, 66] },
+    year: { labels: ["Q4 25", "Q1 26", "Q2 26", "Q3 26", "Q4 26"], atlas: [58, 62, 66, 69, 73], market: [61, 62, 63, 65, 66] }
+  },
+  target: 80
+};
+const DATA = {
+  product: {
+    name: "Atlas",
+    oneLiner: "Predictive maintenance analytics for mid-size manufacturers: spots failing equipment before it stops the line.",
+    pitch: "Spots failing equipment 2–6 weeks before it stops the line.",
+    vision: "By 2028, every mid-size plant in Europe and Africa runs without unplanned downtime, because Atlas tells them what will fail and when.",
+    does: ["Connects to sensors and maintenance systems", "Predicts equipment failures 2–6 weeks ahead", "Schedules maintenance around production"],
+    icp: [["Who", "Discrete manufacturers, 200–2,000 staff"], ["Buyer", "Head of Operations or Maintenance"], ["Regions", "UK, DACH, West Africa"]],
+    team: [["Amara Okafor", "Product Manager", "#0E7C86"], ["James Holt", "Product Owner", "#1E4FA8"], ["Priya Nair", "Engineering Director", "#0B5F67"], ["Lena Fischer", "UX Lead", "#3D6FC4"]],
+    available: ["Failure prediction for pumps, motors, compressors", "SAP PM connector", "Mobile alerts for engineers", "Role-based access"],
+    notPlanned: [["On-premise install", "We're cloud-only, ISO 27001 audit in Feb, and data stays in your region."], ["Energy monitoring", "We focus on equipment health and integrate with your energy tool."]]
+  },
+  demos: [
+    ["Sprint 13 · 6 Nov", "SAP connector live; alert noise cut by 30%."], ["Sprint 12 · 23 Oct", "Mobile alerts; new asset health view."],
+    ["Sprint 11 · 9 Oct", "Model accuracy up to 87% on pumps."], ["Sprint 10 · 25 Sep", "Onboarding flow redesigned."], ["Sprint 9 · 11 Sep", "Role-based access for plant managers."]
+  ],
+  matrix: [
+    ["Failure prediction", "●", "●", "●", "◐"], ["SAP PM connector", "●", "○", "●", "◐"], ["Multi-site dashboard", "Dec 26", "●", "○", "●"],
+    ["Auto-scheduling", "Jan 27", "◐", "○", "●"], ["Spare parts forecasting", "Q1 27", "○", "◐", "○"], ["On-premise install", "○", "●", "○", "●"]
+  ],
+  trends: [["AI predictive maintenance", 85], ["Multi-site operations", 60], ["Sustainability & energy", 20], ["Mobile-first workforce", 45]],
+  battlecards: [
+    ["Competitor A", "Live SAP PM connector; they need custom work.", "On-premise install option.", "Go live in weeks, not months."],
+    ["Competitor B", "30% fewer false alarms since Sprint 13.", "Multi-site view (ours ships Dec).", "Alerts your engineers will trust."],
+    ["Competitor C", "Stronger prediction on rotating equipment.", "Auto-scheduling (ours ships Jan).", "Know what will fail, not just that it might."]
+  ],
+  audit: [
+    ["13 Nov 2026, 14:20", "Jira sync", "Sprint 14 burndown updated (27 points left)"],
+    ["13 Nov 2026, 06:00", "Review sync", "Okana score recalculated: 73"],
+    ["12 Nov 2026, 17:05", "Amara Okafor", "Auto-scheduling GA marked At risk"],
+    ["11 Nov 2026, 10:42", "James Holt", "Added Oracle EAM connector to Next"],
+    ["6 Nov 2026, 16:30", "Priya Nair", "Released v2.4 (SAP PM connector)"]
+  ]
+};
+
+// ---------- Okana score: solved = 1, on roadmap = confidence weight, not addressed = 0; weighted by mentions ----------
+const CONF_WEIGHT = { High: 0.8, Medium: 0.5, Low: 0.2 };
+function okanaScore(themes) {
+  const total = themes.reduce((s, t) => s + t.n, 0);
+  let points = 0, solved = 0, road = 0, none = 0;
+  for (const t of themes) {
+    if (t.status === "solved") { points += t.n; solved += t.n; }
+    else if (t.status === "roadmap") { points += t.n * CONF_WEIGHT[t.conf]; road += t.n; }
+    else none += t.n;
+  }
+  return { score: Math.round(points / total * 100), total, solved: Math.round(solved / total * 100), road: Math.round(road / total * 100), none: Math.round(none / total * 100) };
+}
+
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pillClass = { "On track": "rag-g", "At risk": "rag-a", "Off track": "rag-r", "Not started": "p-none", High: "rag-g", Medium: "rag-a", Low: "rag-r" };
+// Traffic-light bands used across Okana
+const band = (v, green, amber) => (v >= green ? "g" : v >= amber ? "a" : "r");
+const RAG_VAR = { g: "var(--rag-g)", a: "var(--rag-a)", r: "var(--rag-r)" };
+const SPRINTS_SHOWN = { week: 2, month: 4, quarter: 6, year: 12 };
+const PERIOD_LABEL = { week: "this week", month: "this month", quarter: "this quarter", year: "this year" };
+const state = { view: "leadership", period: "month", tab: "setup" };
+// Appearance: "light", "dark" or "system" (follow the device). Remembered per browser.
+const prefs = { theme: "system", period: "month" };
+try { const t = localStorage.getItem("okana-theme"); if (["light", "dark", "system"].includes(t)) prefs.theme = t; } catch (e) {}
+try { const pp = localStorage.getItem("okana-period"); if (["week", "month", "quarter", "year"].includes(pp)) prefs.period = pp; } catch (e) {}
+state.period = prefs.period;
+state.settings = false;
+function applyTheme() {
+  if (prefs.theme === "system") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", prefs.theme);
+}
+applyTheme();
+const TITLES = { settings: "Settings", setup: "Setup guide", about: "About the product", progress: "Product progress", market: "Market position", sales: "Demo prep" };
+try { const v = localStorage.getItem("okana-view"); if (v === "sales" || v === "leadership") state.view = v; } catch (e) {}
+
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2200); }
+
+function ring(score) {
+  const c = 2 * Math.PI * 40, dash = (score / 100) * c;
+  return `<svg width="104" height="104" viewBox="0 0 104 104" role="img" aria-label="Okana score ${score} out of 100">
+    <circle cx="52" cy="52" r="40" fill="none" stroke="var(--grey-soft)" stroke-width="11"></circle>
+    <circle cx="52" cy="52" r="40" fill="none" stroke="${RAG_VAR[band(score, 80, 60)]}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${dash.toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 52 52)"></circle>
+    <text x="52" y="61" text-anchor="middle" font-size="28" font-weight="700" fill="var(--ink)">${score}</text></svg>`;
+}
+function scoreTrend(hist, target) {
+  const w = 760, h = 240, L = 34, R = 20, T = 18, B = 28, lo = 50, hi = 90;
+  const n = hist.atlas.length;
+  const x = (i) => L + (n === 1 ? 0.5 : i / (n - 1)) * (w - L - R);
+  const y = (v) => T + (1 - (v - lo) / (hi - lo)) * (h - T - B);
+  const line = (vals) => vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  let grid = "";
+  for (const g of [50, 60, 70, 80, 90]) grid += `<line x1="${L}" x2="${w - R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"></line><text x="${L - 6}" y="${y(g) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${g}</text>`;
+  const xl = hist.labels.map((l, i) => `<text x="${x(i)}" y="${h - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${l}</text>`).join("");
+  const pts = hist.atlas.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === n - 1 ? 5 : 3.5}" fill="var(--aqua)"></circle><text x="${x(i)}" y="${y(v) - 9}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--aqua-ink)">${v}</text>`).join("");
+  return `<svg width="100%" viewBox="0 0 ${w} ${h}" role="img" aria-label="Atlas score from ${hist.atlas[0]} to ${hist.atlas[n - 1]}; competitor average from ${hist.market[0]} to ${hist.market[n - 1]}; target ${target}">
+    ${grid}
+    <line x1="${L}" x2="${w - R}" y1="${y(target)}" y2="${y(target)}" stroke="var(--aqua-ink)" stroke-width="1.5" stroke-dasharray="6 4"></line>
+    <text x="${w - R}" y="${y(target) - 5}" text-anchor="end" font-size="10" font-weight="600" fill="var(--aqua-ink)">Target ${target}</text>
+    <polyline points="${line(hist.market)}" fill="none" stroke="var(--grey-mark)" stroke-width="2" stroke-dasharray="3 3"></polyline>
+    <polygon points="${x(0)},${y(lo)} ${line(hist.atlas)} ${x(n - 1)},${y(lo)}" fill="var(--aqua-soft)" opacity=".7"></polygon>
+    <polyline points="${line(hist.atlas)}" fill="none" stroke="var(--aqua)" stroke-width="3"></polyline>
+    ${pts}${xl}</svg>`;
+}
+function burndown(sp) {
+  const w = 400, h = 150, L = 34, B = 24, T = 10, R = 10;
+  const x = (d) => L + d * (w - L - R) / sp.length, y = (p) => T + (1 - p / sp.total) * (h - T - B);
+  const actual = sp.remaining.map((p, d) => `${x(d).toFixed(1)},${y(p).toFixed(1)}`).join(" ");
+  const last = sp.remaining.length - 1;
+  let ticks = "";
+  for (const p of [0, Math.round(sp.total / 2), sp.total]) ticks += `<line x1="${L}" x2="${w - R}" y1="${y(p)}" y2="${y(p)}" stroke="var(--line)"></line><text x="${L - 6}" y="${y(p) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${p}</text>`;
+  for (const d of [0, Math.round(sp.length / 2), sp.length]) ticks += `<text x="${x(d)}" y="${h - 6}" text-anchor="${d === sp.length ? "end" : d === 0 ? "start" : "middle"}" font-size="10" fill="var(--muted)">Day ${d}</text>`;
+  return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Burndown: ${sp.remaining[last]} of ${sp.total} points left on day ${sp.day}">
+    ${ticks}
+    <polygon points="${x(0)},${y(0)} ${actual} ${x(last)},${y(0)}" fill="var(--aqua-soft)"></polygon>
+    <line x1="${x(0)}" y1="${y(sp.total)}" x2="${x(sp.length)}" y2="${y(0)}" stroke="var(--grey-mark)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+    <polyline points="${actual}" fill="none" stroke="var(--aqua)" stroke-width="3"></polyline>
+    <circle cx="${x(last)}" cy="${y(sp.remaining[last])}" r="5" fill="var(--aqua)"></circle></svg>`;
+}
+function velocityBars(rows) {
+  const max = Math.max(...rows.map((r) => r[1]));
+  return `<div style="display:flex;align-items:flex-end;gap:8px;height:130px">${rows.map(([s, p], i) =>
+    `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0">
+      <span class="small muted">${p}</span>
+      <div style="width:100%;height:${Math.round(p / max * 90)}px;border-radius:3px 3px 0 0;background:${i === rows.length - 1 ? "var(--aqua)" : "var(--blue)"}"></div>
+      <span class="small muted">${s}</span></div>`).join("")}</div>`;
+}
+
+// ---------- sections ----------
+function renderAbout() {
+  const p = DATA.product, arr = salesforceAdapter.arr(), sp = jiraAdapter.sprint(), sc = okanaScore(reviewsAdapter.themes());
+  const hist = reviewsAdapter.scoreHistory[state.period].atlas, delta = hist[hist.length - 1] - hist[0];
+  const pct = Math.round(arr.current / arr.goal * 100);
+  $("v-about").innerHTML = `
+  <div><h1>${esc(p.name)}</h1><p class="lede">${esc(p.oneLiner)}</p></div>
+  <div class="grid g-main">
+    <div class="stack">
+      <div class="card"><h2>Product team</h2>
+        <div class="grid g4">${p.team.map(([n, r, c]) => `<div class="person"><div class="avatar" style="background:${c}">${n.split(" ").map((s) => s[0]).join("")}</div><div style="min-width:0"><div style="font-weight:600">${esc(n)}</div><div class="small muted">${esc(r)}</div></div></div>`).join("")}</div>
+      </div>
+      <div class="card vision"><span class="eyebrow">Product vision</span><p>${esc(p.vision)}</p></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+        <div class="card"><span class="eyebrow" style="color:var(--aqua)">What it does</span>${p.does.map((d) => `<div>• ${esc(d)}</div>`).join("")}</div>
+        <div class="card"><span class="eyebrow" style="color:var(--blue)">Ideal customer profile</span>${p.icp.map(([k, v]) => `<div><b>${k}:</b> ${esc(v)}</div>`).join("")}</div>
+      </div>
+      <div class="card"><span class="eyebrow">ARR goal · FY27 · Source: Salesforce</span>
+        <div><span class="big" style="color:var(--aqua)">$${arr.current.toFixed(1)}m</span> <span class="muted">of $${arr.goal.toFixed(1)}m goal (${pct}%)</span></div>
+        <div class="track"><div class="fill" style="width:${pct}%"></div><div class="mark" style="left:${arr.planToDate * 100}%"></div></div>
+        <span class="small muted">Black marker: where the plan says we should be by now (${arr.planToDate * 100}%).</span>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card"><h2>CEO snapshot</h2>
+        <div><div class="row"><div><div class="small muted">Current sprint</div><b style="font-size:18px">Sprint ${sp.number}</b></div><span class="pill rag-g">On track</span></div>
+        <div class="row"><div><div class="small muted">Next release</div><b style="font-size:18px">4 Dec 2026</b></div><span class="pill rag-g">On track</span></div>
+        <div class="row"><div><div class="small muted">Okana score</div><b style="font-size:18px">${sc.score} / 100</b></div><span class="pill rag-${band(sc.score, 80, 60)}">${delta >= 0 ? "▲" : "▼"} ${Math.abs(delta)} ${PERIOD_LABEL[state.period]}</span></div>
+        <div class="row"><div><div class="small muted">ARR vs plan</div><b style="font-size:18px">${pct}% of goal</b></div><span class="pill rag-${band(-(arr.planToDate * 100 - pct), 0, -10)}">${Math.round(arr.planToDate * 100 - pct)} pts behind plan</span></div></div>
+        <a href="#market">See market detail →</a>
+      </div>
+      <div class="card"><h2>Sales quick answers</h2><span class="muted">What can I promise a client?</span>
+        <div class="box p-good"><b>Available now</b><span style="color:var(--ink)">${p.available.slice(0, 3).map(esc).join(" · ")}</span></div>
+        <div class="box p-info"><b>Next 90 days (high confidence)</b><span style="color:var(--ink)">${jiraAdapter.roadmap().filter((r) => r.conf === "High").map((r) => esc(r.name)).join(" · ")}</span></div>
+        <div class="box p-none"><b>Not on roadmap</b><span style="color:var(--ink)">${p.notPlanned.map((n) => esc(n[0])).join(" · ")}</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderProgress() {
+  const sp = jiraAdapter.sprint(), left = sp.remaining[sp.remaining.length - 1];
+  const ideal = Math.round(sp.total * (1 - sp.day / sp.length)), behind = left - ideal;
+  const vel = jiraAdapter.velocity().slice(-SPRINTS_SHOWN[state.period]);
+  const avg = Math.round(vel.reduce((s, v) => s + v[1], 0) / vel.length);
+  const lanes = [["now", "Now (this quarter)", "p-good"], ["next", "Next (next quarter)", "p-info"], ["later", "Later", "p-none"]];
+  const road = jiraAdapter.roadmap();
+  $("v-progress").innerHTML = `
+  <div class="grid g-progress">
+    <div class="card"><span class="eyebrow">Current sprint · Source: Jira</span><span class="big" style="color:var(--aqua)">Sprint ${sp.number}</span><span>Goal: ${esc(sp.goal)}</span>
+      <div style="display:grid;grid-template-columns:repeat(${sp.length},1fr);gap:4px">${Array.from({ length: sp.length }, (_, i) => `<div style="height:8px;border-radius:2px;background:${i < sp.day ? "var(--aqua)" : "var(--grey-soft)"}"></div>`).join("")}</div>
+      <span class="muted small">Day ${sp.day} of ${sp.length} · ${sp.length - sp.day} days left</span></div>
+    <div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="eyebrow">Burndown · Sprint ${sp.number}</span><button type="button" class="tip" aria-label="What the burndown shows" data-tip="Points of work left in this sprint, day by day. If the solid line stays above the dashed ideal line, the sprint goal is at risk.">i</button></div>${burndown(sp)}
+      <span class="small muted">${left} of ${sp.total} points left · <span class="pill rag-${behind <= 0 ? "g" : behind <= 5 ? "a" : "r"}">${behind > 0 ? behind + " points behind ideal" : "On or ahead of ideal"}</span> · dashed line = ideal</span></div>
+    <div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="eyebrow">Velocity · last ${vel.length} sprints</span><button type="button" class="tip left" aria-label="What velocity means" data-tip="Points the team finishes per sprint. Steady or rising velocity makes roadmap dates more reliable.">i</button></div>${velocityBars(vel)}<span class="small muted">Average ${avg} points per sprint</span></div>
+  </div>
+  <div class="grid g-road">
+    <div class="card"><div class="head"><div style="display:flex;align-items:center;gap:8px"><h2>Roadmap</h2><button type="button" class="tip" aria-label="What confidence levels mean" data-tip="High: safe to promise to clients. Medium: share as planned, without committing to a date. Low: internal only, so don't mention it to clients.">i</button></div><span class="small muted">High = safe to promise · Medium = mention as planned · Low = don't promise</span></div>
+      <div class="grid g3">${lanes.map(([k, t, c]) => `<div class="col ${c}"><b>${t}</b>${road.filter((r) => r.lane === k).map((r) => `<div class="item"><span style="font-weight:600;color:var(--ink)">${esc(r.name)}</span><div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span class="small muted">${esc(r.when)}</span><span class="pill ${pillClass[r.conf]}">${r.conf}</span></div></div>`).join("")}</div>`).join("")}</div></div>
+    <div class="card"><h2>Next 5 milestones</h2><div>${jiraAdapter.milestones().map(([n, d, s]) => `<div class="row"><div><div style="font-weight:600">${esc(n)}</div><div class="small muted">${esc(d)}</div></div><span class="pill ${pillClass[s]}">${s}</span></div>`).join("")}</div></div>
+  </div>
+  <div class="card"><div class="head"><h2>Sprint demos</h2><span class="small muted">Recordings with AI summaries</span></div>
+    <div class="grid g5">${DATA.demos.map(([n, s]) => `<div style="display:flex;flex-direction:column;gap:6px"><button type="button" class="video" data-demo="${esc(n)}" aria-label="Play ${esc(n)} recording"><span></span></button><b class="small">${esc(n)}</b><span class="small muted">${esc(s)}</span></div>`).join("")}</div></div>
+  <div class="grid g3">
+    <div class="card"><h2>Release notes</h2>${jiraAdapter.releases().map(([v, d, t]) => `<div><b style="color:var(--aqua)">${v}</b> · ${d} · ${esc(t)}</div>`).join("")}</div>
+    <div class="card"><h2>Full product demo</h2><span>Updated after Sprint 13 · 18 min</span><button type="button" class="btn" data-demo="Full product demo">Play demo</button></div>
+    <div class="card"><h2>Current wireframes</h2><span>Multi-site view · Auto-scheduling</span><span class="small muted">Links to your design tool appear here.</span></div>
+  </div>`;
+}
+
+function renderMarket() {
+  const themes = reviewsAdapter.themes(), sc = okanaScore(themes), hist = reviewsAdapter.scoreHistory[state.period];
+  const delta = hist.atlas[hist.atlas.length - 1] - hist.atlas[0], gap = hist.atlas[hist.atlas.length - 1] - hist.market[hist.market.length - 1], maxN = Math.max(...themes.map((t) => t.n));
+  const cell = (v, atlas) => {
+    if (v === "●") return `<span style="color:var(--aqua);font-size:18px" aria-label="Full">●</span>`;
+    if (v === "◐") return `<span style="color:var(--aqua);font-size:18px;opacity:.75" aria-label="Partial">◐</span>`;
+    if (v === "○") return `<span style="color:var(--grey-mark);font-size:18px" aria-label="None">○</span>`;
+    return `<span class="pill p-info">${esc(v)}</span>`;
+  };
+  const statusPill = (t) => t.status === "solved" ? "rag-g" : t.status === "roadmap" ? "rag-a" : "rag-r";
+  $("v-market").innerHTML = `
+  <div class="grid g-mkt">
+    <div class="card"><div style="display:flex;align-items:center;gap:8px"><span class="eyebrow">Okana score</span><button type="button" class="tip" aria-label="What the Okana score means" data-tip="How much of what competitors' customers complain about Atlas already solves or plans to solve, weighted by how often each complaint comes up. 100 means every complaint is answered.">i</button></div>
+      <div style="display:flex;align-items:center;gap:14px">${ring(sc.score)}<div><b style="color:var(--aqua-ink)">${delta >= 0 ? "▲" : "▼"} ${Math.abs(delta)} ${PERIOD_LABEL[state.period]}</b><div class="small muted">2nd of 4 vendors</div><div class="small muted">${gap >= 0 ? gap + " points above" : Math.abs(gap) + " points below"} competitor average</div></div></div>
+      <div class="small muted">Share of ${sc.total} complaint mentions</div>
+      <div style="display:flex;height:12px;border-radius:6px;overflow:hidden"><div style="width:${sc.solved}%;background:var(--rag-g)"></div><div style="width:${sc.road}%;background:var(--rag-a)"></div><div style="width:${sc.none}%;background:var(--rag-r)"></div></div>
+      <div class="small"><span class="dot g"></span><b style="color:var(--rag-g-ink)">${sc.solved}%</b> solved today · <span class="dot a"></span><b style="color:var(--rag-a-ink)">${sc.road}%</b> on roadmap · <span class="dot r"></span><b style="color:var(--rag-r-ink)">${sc.none}%</b> not addressed</div>
+      <div class="ragkey"><span><span class="dot g"></span>80+ on target</span><span><span class="dot a"></span>60–79 watch</span><span><span class="dot r"></span>below 60 act now</span></div>
+      <details><summary class="small" style="cursor:pointer">How this is calculated</summary><p class="small muted" style="margin:8px 0 0">Each complaint theme counts by its number of mentions. Solved today scores 1, on the roadmap scores by confidence (High 0.8, Medium 0.5, Low 0.2), not addressed scores 0. Score = points ÷ all mentions × 100.</p></details>
+    </div>
+    <div class="card"><div class="head"><h2>Feature comparison</h2><span class="small muted">● full · ◐ partial · ○ none · date = on Atlas roadmap</span></div>
+      <div class="tablewrap"><table><thead><tr><th>Feature</th><th class="c" style="color:var(--aqua)">Atlas</th><th class="c">Competitor A</th><th class="c">Competitor B</th><th class="c">Competitor C</th></tr></thead>
+      <tbody>${DATA.matrix.map(([f, a, b, c, d]) => `<tr><td>${esc(f)}</td><td class="c">${cell(a, true)}</td><td class="c">${cell(b)}</td><td class="c">${cell(c)}</td><td class="c">${cell(d)}</td></tr>`).join("")}</tbody></table></div></div>
+  </div>
+  <div class="card"><div class="head"><div><h2>Okana score over time</h2><p class="small muted" style="margin:4px 0 0;max-width:70ch">Is Atlas pulling ahead of the market? The aqua line is Atlas's score at each weekly review run. The grey line is the average of Competitors A–C, scored the same way. The dashed line is the leadership target.</p></div>
+    <div class="legend"><span><i style="background:var(--aqua)"></i>Atlas</span><span><i style="background:var(--grey-mark)"></i>Competitor average</span><span><i style="background:var(--aqua-ink)"></i>Target ${reviewsAdapter.target}</span></div></div>
+    <div style="max-width:900px">${scoreTrend(hist, reviewsAdapter.target)}</div>
+    <p class="small" style="margin:0"><b>Reading it:</b> Atlas moved from ${hist.atlas[0]} to ${hist.atlas[hist.atlas.length - 1]} ${PERIOD_LABEL[state.period]}, ${gap} points above the competitor average and ${reviewsAdapter.target - hist.atlas[hist.atlas.length - 1]} points short of target. Shipping the multi-site dashboard (131 mentions) would add about 4 points.</p>
+  </div>
+  <div class="grid g-mkt2">
+    <div class="card"><h2>What competitors' customers complain about</h2>
+      <div class="tablewrap"><table><thead><tr><th>Theme</th><th>Mentions</th><th>Atlas answer</th></tr></thead><tbody>
+      ${themes.map((t) => `<tr><td><b>${esc(t.theme)}</b><div class="small muted">"${esc(t.quote)}"</div></td><td><div style="display:flex;align-items:center;gap:8px"><div class="mbar"><div style="width:${Math.round(t.n / maxN * 100)}%;background:var(--blue)"></div></div><span class="small">${t.n}</span></div></td><td><span class="pill ${statusPill(t)}">${esc(t.answer)}${t.conf ? " · " + t.conf : ""}</span></td></tr>`).join("")}
+      </tbody></table></div></div>
+    <div class="stack">
+      <div class="card"><h2>Market trends coverage</h2><div class="ragkey"><span><span class="dot g"></span>70%+</span><span><span class="dot a"></span>40–69%</span><span><span class="dot r"></span>below 40%</span></div>${DATA.trends.map(([n, p]) => `<div><div style="display:flex;justify-content:space-between"><span>${esc(n)}</span><span class="pill rag-${band(p, 70, 40)}">${p}% covered</span></div><div class="mbar" style="height:10px;margin-top:4px"><div style="width:${p}%;background:${RAG_VAR[band(p, 70, 40)]}"></div></div></div>`).join("")}</div>
+      <div class="card dark"><h2>Sales talking points</h2><div id="talking">${talkingPoints().map((t) => `<div>• ${esc(t)}</div>`).join("")}</div><button type="button" class="btn" data-copy="talking">Copy talking points</button></div>
+    </div>
+  </div>
+  <p class="small muted" style="margin:0">Sources: ${reviewsAdapter.reviewCount.toLocaleString()} public reviews (G2, Capterra, Reddit) and 3 analyst reports · refreshed weekly · last run 13 Nov 2026, 06:00.</p>`;
+}
+
+function talkingPoints() {
+  return DATA.battlecards.map(([c, win, lose, say]) => `Against ${c}: ${win} Say "${say}"`);
+}
+
+function renderSales() {
+  const p = DATA.product, high = jiraAdapter.roadmap().filter((r) => r.conf === "High");
+  const timeline = jiraAdapter.milestones();
+  $("v-sales").innerHTML = `
+  <div class="head"><div><span class="eyebrow" style="color:var(--aqua)">Demo prep · ${esc(p.name)}</span><h1 style="margin-top:6px">${esc(p.pitch)}</h1></div><button type="button" class="btn" data-copy="deck">Copy to client deck</button></div>
+  <h2 style="font-size:18px">What you can promise</h2>
+  <div class="grid g3">
+    <div class="card promise"><b style="color:var(--aqua-ink);font-size:15px">Yes, available today</b>${p.available.map((a) => `<div>✓ ${esc(a)}</div>`).join("")}</div>
+    <div class="card promise next"><b style="color:var(--blue-ink);font-size:15px">Coming in the next 90 days</b>${high.map((r) => `<div class="row" style="padding:4px 0;border:0"><span>${esc(r.name)}</span><span class="pill p-info">${esc(r.when)}</span></div>`).join("")}<span class="small muted">Only High-confidence dates are shown here.</span></div>
+    <div class="card promise no"><b class="muted" style="font-size:15px">Not planned: what to say</b>${p.notPlanned.map(([n, s]) => `<div><b>${esc(n)}</b><div class="small muted">"${esc(s)}"</div></div>`).join("")}</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+    <div class="card"><h2>Coming soon</h2><div class="timeline">${timeline.filter((m) => m[0] !== "ISO 27001 audit").map(([n, d]) => `<div><b></b><span><span class="small" style="color:var(--aqua);font-weight:700">${esc(d)}</span><br>${esc(n)}</span></div>`).join("")}</div></div>
+    <div class="card"><h2>Demos to show</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+      ${[["Full product demo", "18 min"], ["SAP connector", "4 min"], ["Mobile alerts", "3 min"]].map(([n, l]) => `<div style="display:flex;flex-direction:column;gap:6px"><button type="button" class="video" data-demo="${n}" aria-label="Play ${n}"><span></span></button><b class="small">${n} · ${l}</b></div>`).join("")}</div></div>
+  </div>
+  <div class="head"><h2 style="font-size:18px">Battlecards</h2><span class="small muted">From ${reviewsAdapter.reviewCount.toLocaleString()} public reviews · updated weekly</span></div>
+  <div class="grid g3">${DATA.battlecards.map(([c, w, l, s]) => `<div class="card"><b style="font-size:15px">vs ${c}</b><div class="win small"><b style="color:var(--rag-g-ink)">We win:</b> ${esc(w)}</div><div class="lose small"><b style="color:var(--amber-ink)">They win:</b> ${esc(l)}</div><div class="small"><b>Say:</b> "${esc(s)}"</div></div>`).join("")}</div>`;
+}
+
+const SETUP = [
+  ["Add your product", "Name, team, vision, ideal customer profile and ARR goal.", "Fills the About page.", "Done"],
+  ["Connect Jira", "Sign in with a Jira admin account and pick the project and board.", "Sprints, burndown, velocity, roadmap and release notes.", "Done"],
+  ["Connect Salesforce", "Approve read-only access to opportunities and accounts.", "ARR progress and, in v2, the Sales status page.", "Done"],
+  ["Connect Pendo", "Paste your Pendo integration key.", "Feature usage for Product health (v2).", "Not connected"],
+  ["Add competitors and review sources", "Name up to 5 competitors. Okana collects their public reviews from G2, Capterra and Reddit each week.", "Feature comparison, complaint themes and the Okana score.", "In progress"],
+  ["Set confidence rules", "Choose which Jira fields or labels mark a roadmap item as High, Medium or Low confidence.", "What sales can promise, and the score's roadmap weighting.", "Not started"],
+  ["Invite your team", "Add leaders with Leadership access and sales staff with Sales access.", "Who sees which view.", "Not started"]
+];
+function renderSetup() {
+  const done = SETUP.filter((s) => s[3] === "Done").length, pct = Math.round(done / SETUP.length * 100);
+  const cls = { Done: "rag-g", "In progress": "rag-a", "Not connected": "rag-r", "Not started": "p-none" };
+  $("v-setup").innerHTML = `
+  <div><h1>Set up Okana</h1><p class="lede">Seven steps to connect your product's data. Most teams finish in under an hour. In this prototype, connections use sample data.</p></div>
+  <div class="card"><div class="head"><b>${done} of ${SETUP.length} steps done</b><span class="small muted">${pct}%</span></div><div class="track"><div class="fill" style="width:${pct}%"></div></div></div>
+  <div class="card" style="gap:0">${SETUP.map(([t, how, uses, status], i) => `<div class="step"><div class="num ${status === "Done" ? "done" : ""}">${status === "Done" ? "✓" : i + 1}</div><div style="min-width:0"><b style="font-size:15px">${esc(t)}</b><div style="margin-top:2px">${esc(how)}</div><div class="small muted" style="margin-top:4px">Okana uses this for: ${esc(uses)}</div></div><span class="pill ${cls[status]}">${status}</span></div>`).join("")}</div>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div class="card"><h2>Your data stays read-only</h2><span class="muted">Okana only reads from Jira, Salesforce and Pendo. It never changes tickets, deals or settings in your tools.</span></div>
+    <div class="card"><h2>How often data refreshes</h2><span class="muted">Jira and Salesforce: every hour. Competitor reviews and the Okana score: weekly, every Friday at 06:00.</span></div>
+    <div class="card"><h2>Need help?</h2><span class="muted">Your Okana admin can see every change in the audit log, including who connected each tool and when.</span></div>
+  </div>`;
+}
+
+function renderSettings() {
+  const opt = (key, name, desc, side, bg, card, line) => `<button type="button" class="themeopt" data-theme-choice="${key}" aria-pressed="${prefs.theme === key}">
+      <span class="pv" aria-hidden="true">${side}<span style="flex:1;background:${bg};padding:8px;display:flex;flex-direction:column;gap:5px"><i style="height:8px;width:55%;border-radius:2px;background:${line}"></i><i style="flex:1;border-radius:3px;background:${card}"></i></span></span>
+      <b>${name}<span class="check"></span></b><span class="small muted">${desc}</span></button>`;
+  const side = (c) => `<i style="width:22%;background:${c}"></i>`;
+  const half = `<i style="width:22%;background:linear-gradient(135deg,#0F2A3A 50%,#07131B 50%)"></i>`;
+  $("v-settings").innerHTML = `
+  <div><h1>Settings</h1><p class="lede">These settings apply to you in this browser.</p></div>
+  <div class="card"><h2>Appearance</h2><span class="muted">Choose how Okana looks.</span>
+    <div class="themes" role="group" aria-label="Theme">
+      ${opt("light", "Light", "Bright background, best in well-lit rooms and on projectors.", side("#0F2A3A"), "#F4F8F9", "#FFFFFF", "#D5DEE4")}
+      ${opt("dark", "Dark", "Dark background, easier on the eyes in low light.", side("#07131B"), "#0B1A24", "#12242F", "#24394A")}
+      ${opt("system", "Match my device", "Follows your computer or phone setting automatically.", half, "linear-gradient(135deg,#F4F8F9 50%,#0B1A24 50%)", "linear-gradient(135deg,#FFFFFF 50%,#12242F 50%)", "#8C9AA6")}
+    </div>
+  </div>
+  <div class="card"><h2>Default time period</h2><span class="muted">The period Okana shows when you open it.</span>
+    <div class="seg" role="group" aria-label="Default time period" id="defaultPeriod" style="align-self:flex-start">
+      ${["week", "month", "quarter", "year"].map((pp) => `<button type="button" data-default-period="${pp}" aria-pressed="${prefs.period === pp}">${pp[0].toUpperCase() + pp.slice(1)}</button>`).join("")}
+    </div>
+  </div>`;
+}
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-theme-choice]");
+  if (t) {
+    prefs.theme = t.dataset.themeChoice;
+    try { localStorage.setItem("okana-theme", prefs.theme); } catch (err) {}
+    applyTheme(); renderSettings();
+    toast(prefs.theme === "system" ? "Okana now matches your device." : `Switched to ${prefs.theme} mode.`);
+  }
+  const d = e.target.closest("[data-default-period]");
+  if (d) {
+    prefs.period = state.period = d.dataset.defaultPeriod;
+    try { localStorage.setItem("okana-period", prefs.period); } catch (err) {}
+    renderSettings(); toast(`Okana will open on ${prefs.period}.`);
+  }
+});
+
+function deckText() {
+  const p = DATA.product, high = jiraAdapter.roadmap().filter((r) => r.conf === "High");
+  return [`${p.name}: ${p.pitch}`, "", "Available today:", ...p.available.map((a) => "- " + a), "", "Coming in the next 90 days:", ...high.map((r) => `- ${r.name} (${r.when})`)].join("\n");
+}
+
+// ---------- routing and controls ----------
+function render() {
+  const sales = state.view === "sales";
+  const tab = state.settings ? "settings" : sales ? "sales" : (["about", "progress", "market", "setup"].includes(state.tab) ? state.tab : "setup");
+  $("tabs").hidden = sales;
+  $("salesNav").hidden = !sales;
+  $("pageTitle").textContent = TITLES[tab];
+  $("periodSeg").hidden = tab === "setup" || tab === "settings";
+  document.querySelectorAll("#settingsNav a").forEach((a) => a.setAttribute("aria-current", tab === "settings" ? "page" : "false"));
+  document.querySelectorAll("#salesNav a").forEach((a) => a.setAttribute("aria-current", tab === "sales" ? "page" : "false"));
+  closeMenu();
+  for (const k of ["about", "progress", "market", "sales", "setup", "settings"]) $("v-" + k).hidden = k !== tab;
+  document.querySelectorAll("#tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
+  document.querySelectorAll("#viewSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === state.view)));
+  document.querySelectorAll("#periodSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.period === state.period)));
+  ({ about: renderAbout, progress: renderProgress, market: renderMarket, sales: renderSales, setup: renderSetup, settings: renderSettings })[tab]();
+  if (typeof trackPage === "function") trackPage();
+}
+function fromHash() {
+  const h = location.hash.slice(1);
+  state.settings = h === "settings";
+  if (h === "sales") state.view = "sales";
+  else if (["about", "progress", "market", "setup"].includes(h)) { state.tab = h; state.view = "leadership"; }
+  render();
+}
+$("viewSeg").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  state.view = b.dataset.view; state.settings = false;
+  try { localStorage.setItem("okana-view", state.view); } catch (err) {}
+  setHash(state.view === "sales" ? "sales" : state.tab);
+  render();
+});
+function openMenu() { $("side").classList.add("open"); $("scrim").hidden = false; $("menuBtn").setAttribute("aria-expanded", "true"); }
+function closeMenu() { $("side").classList.remove("open"); $("scrim").hidden = true; $("menuBtn").setAttribute("aria-expanded", "false"); }
+$("menuBtn").addEventListener("click", openMenu);
+$("scrim").addEventListener("click", closeMenu);
+$("salesNav").addEventListener("click", (e) => { if (e.target.closest("a")) { e.preventDefault(); state.settings = false; setHash("sales"); render(); } });
+$("settingsNav").addEventListener("click", (e) => { if (e.target.closest("a")) { e.preventDefault(); state.settings = true; setHash("settings"); render(); window.scrollTo(0, 0); } });
+function setHash(h) { try { history.replaceState(null, "", "#" + h); } catch (err) {} }
+$("tabs").addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-tab]"); if (!a) return;
+  e.preventDefault(); state.settings = false; state.tab = a.dataset.tab; state.view = "leadership"; setHash(state.tab); render(); window.scrollTo(0, 0);
+});
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("main a[href^='#']"); if (!a) return;
+  const h = a.getAttribute("href").slice(1);
+  if (["about", "progress", "market", "setup"].includes(h)) { e.preventDefault(); state.settings = false; state.tab = h; state.view = "leadership"; setHash(h); render(); window.scrollTo(0, 0); }
+});
+$("periodSeg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; state.period = b.dataset.period; render(); });
+document.addEventListener("click", (e) => {
+  const demo = e.target.closest("[data-demo]");
+  if (demo) toast(`"${demo.dataset.demo}" recording plays here once video links are connected.`);
+  const copy = e.target.closest("[data-copy]");
+  if (copy) {
+    const text = copy.dataset.copy === "deck" ? deckText() : talkingPoints().join("\n");
+    try { navigator.clipboard.writeText(text).then(() => toast("Copied. Paste it into your deck."), () => toast("Copy isn't allowed here. Select the text instead.")); }
+    catch (err) { toast("Copy isn't allowed here. Select the text instead."); }
+  }
+});
+$("auditBtn").addEventListener("click", () => {
+  $("auditList").innerHTML = DATA.audit.map(([w, who, what]) => `<div class="row" style="align-items:flex-start"><div><div style="font-weight:600">${esc(what)}</div><div class="small muted">${esc(who)} · ${esc(w)}</div></div></div>`).join("");
+  $("drawer").hidden = false; $("closeDrawer").focus();
+});
+$("closeDrawer").addEventListener("click", () => { $("drawer").hidden = true; $("auditBtn").focus(); });
+window.addEventListener("hashchange", fromHash);
+$("setupBadge").textContent = SETUP.filter((s) => s[3] === "Done").length + "/" + SETUP.length;
+fromHash();
+
+// ---------- Live Jira data (written by the GitHub Action into data/jira.json) ----------
+async function loadLiveJira() {
+  let d;
+  try {
+    const r = await fetch(OKANA_CONFIG.liveJiraFile, { cache: "no-store" });
+    if (!r.ok) return;
+    d = await r.json();
+  } catch (err) { return; }
+  if (!d || !d.sprint) return;
+  const has = (a) => Array.isArray(a) && a.length > 0;
+  jiraAdapter.sprint = () => d.sprint;
+  if (has(d.velocity)) jiraAdapter.velocity = () => d.velocity;
+  if (has(d.roadmap)) jiraAdapter.roadmap = () => d.roadmap;
+  if (has(d.milestones)) jiraAdapter.milestones = () => d.milestones;
+  if (has(d.releases)) jiraAdapter.releases = () => d.releases;
+  const when = new Date(d.fetchedAt);
+  const label = isNaN(when) ? "" : when.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  $("dataBadge").textContent = "Live Jira data · other sections sample";
+  $("dataBadge").title = "Jira project " + (d.projectKey || "") + ", board " + (d.boardId || "");
+  if (label) $("updatedAt").textContent = "Jira synced " + label;
+  DATA.audit.unshift([label || "Latest sync", "Jira sync", "Sprint " + d.sprint.number + " synced (" + d.sprint.remaining[d.sprint.remaining.length - 1] + " points left)"]);
+  render();
+}
+loadLiveJira();
+
+// ---------- Pendo usage tracking (only runs when a key is set in OKANA_CONFIG) ----------
+function startPendo() {
+  const key = OKANA_CONFIG.pendoApiKey;
+  if (!key) return;
+  (function (p, e, n, d) {
+    const o = (p[d] = p[d] || {}); o._q = o._q || [];
+    ["initialize", "identify", "updateOptions", "pageLoad", "track"].forEach((m) => {
+      o[m] = o[m] || function () { o._q[m === "initialize" ? "unshift" : "push"]([m].concat([].slice.call(arguments, 0))); };
+    });
+    const y = e.createElement(n); y.async = true; y.src = OKANA_CONFIG.pendoCdn + "/agent/static/" + key + "/pendo.js";
+    const z = e.getElementsByTagName(n)[0]; z.parentNode.insertBefore(y, z);
+  })(window, document, "script", "pendo");
+  // Anonymous visitor id per browser; no names or emails are sent.
+  let id = "";
+  try { id = localStorage.getItem("okana-visitor") || ""; if (!id) { id = "anon-" + Math.random().toString(36).slice(2, 10); localStorage.setItem("okana-visitor", id); } } catch (err) { id = "anon-session"; }
+  window.pendo.initialize({ visitor: { id: id, okanaView: state.view }, account: { id: "okana-prototype" } });
+}
+function trackPage() {
+  if (OKANA_CONFIG.pendoApiKey && window.pendo && window.pendo.track) {
+    const tab = state.view === "sales" ? "sales" : state.tab;
+    window.pendo.track("Okana page viewed", { page: tab, view: state.view, period: state.period });
+  }
+}
+startPendo();
+trackPage(); // the first page view happens before Pendo starts
+</script>
+</body>
+</html>
