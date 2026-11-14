@@ -46,7 +46,7 @@ Jira Cloud ──(GitHub Action, hourly)──> data/jira.json ──> index.htm
 1. Create an API token at https://id.atlassian.com/manage-profile/security/api-tokens.
 2. In this repository: **Settings → Secrets and variables → Actions**.
    - Secrets: `JIRA_BASE_URL` (e.g. `https://your-team.atlassian.net`), `JIRA_EMAIL`, `JIRA_API_TOKEN`
-   - Variables: `JIRA_PROJECT_KEY` (e.g. `ATLAS`), `JIRA_BOARD_ID` (the number in your board's URL), optionally `JIRA_POINTS_FIELD`
+   - Variables: `ATLAS` , `JIRA_BOARD_ID` (the number in your board's URL), optionally `JIRA_POINTS_FIELD`
 3. In Jira, label roadmap epics `now`, `next` or `later`, plus `confidence-high`, `confidence-medium` or `confidence-low`, and give them due dates. Unreleased versions with release dates become milestones.
 4. Run **Actions → Okana sync and deploy → Run workflow**.
 
@@ -65,4 +65,19 @@ The backlog lives on the [Okana roadmap](../../projects) board. `scripts/setup-p
 3. Weekly competitor review collection and AI theme summaries
 4. v2 pages: Geo position, Product health, Transformation readiness, Sales status, Documents
 5. Sign-in with Leadership and Sales roles
+
+
+## About
+
+Built by Odun Akinmoladun, Senior Product Manager. Designed in wireframes first, then prototyped with AI-assisted development (Claude).
+
+## Wireframes
+
+| Setup guide | About the product | Product progress |
+|---|---|---|
+| ![Setup guide](wireframes/setup.png) | ![About the product](wireframes/about.png) | ![Product progress](wireframes/progress.png) |
+
+| Market position | Sales view |
+|---|---|
+| ![Market position](wireframes/market.png) | ![Sales view](wireframes/sales.png) |
 
