@@ -16,6 +16,8 @@ Sales teams walk into client demos unsure what they can promise. CEOs hear progr
 | About the product | Everyone | Team, vision, ICP, ARR goal, CEO snapshot, sales quick answers |
 | Product progress | Leadership | Sprint, burndown, velocity, roadmap with confidence, milestones, demos |
 | Market position | Leadership | Okana score, feature comparison, competitor complaints, trends |
+| Product health | Leadership | Open bugs, fix time vs target, bugs opened vs fixed, time to feature, backlog age, roadmap health |
+| Documents | Leadership and Sales | Policy and compliance documents with owners, review dates and status; Sales only sees what's cleared for clients |
 | Demo prep (Sales view) | Sales | What to promise, what's coming, demos, battlecards |
 
 Statuses use red, amber and green, with text labels so they still read without colour.
@@ -37,7 +39,7 @@ Jira Cloud ──(GitHub Action, hourly)──> data/jira.json ──> index.htm
 
 - **index.html** is the whole app: plain HTML, CSS and JavaScript, no build step.
 - Each data source has an adapter (`jiraAdapter`, `salesforceAdapter`, `reviewsAdapter`). Without live data they return sample data for a fictional product, Atlas.
-- **scripts/fetch-jira.mjs** reads the active sprint, closed sprints, roadmap epics and versions from Jira and writes `data/jira.json`. The Jira API token stays in GitHub Secrets and never reaches the browser.
+- **scripts/fetch-jira.mjs** reads the active sprint, closed sprints, roadmap epics, versions, bugs and backlog from Jira and writes `data/jira.json`. The Jira API token stays in GitHub Secrets and never reaches the browser.
 - Jira has no daily burndown history in its API, so the sync records remaining points each day in `data/jira-history.json`.
 - **.github/workflows/okana.yml** runs the sync every hour and publishes the site.
 
@@ -46,9 +48,28 @@ Jira Cloud ──(GitHub Action, hourly)──> data/jira.json ──> index.htm
 1. Create an API token at https://id.atlassian.com/manage-profile/security/api-tokens.
 2. In this repository: **Settings → Secrets and variables → Actions**.
    - Secrets: `JIRA_BASE_URL` (e.g. `https://your-team.atlassian.net`), `JIRA_EMAIL`, `JIRA_API_TOKEN`
-   - Variables: `ATLAS` , `JIRA_BOARD_ID` (the number in your board's URL), optionally `JIRA_POINTS_FIELD`
+   - Variables: `JIRA_PROJECT_KEY` (your Jira space key, e.g. `ATLAS`), `JIRA_BOARD_ID` (the number in your board's URL), optionally `JIRA_POINTS_FIELD`
 3. In Jira, label roadmap epics `now`, `next` or `later`, plus `confidence-high`, `confidence-medium` or `confidence-low`, and give them due dates. Unreleased versions with release dates become milestones.
+   For Product health, log bugs as the **Bug** work type with a priority. Done epics give time to feature, and To Do items give backlog age.
 4. Run **Actions → Okana sync and deploy → Run workflow**.
+
+## Documents
+
+The Documents page works without any connection. To use your own list, add `data/documents.json` to the repository:
+
+```json
+{
+  "documents": [
+    { "title": "Privacy notice", "category": "Privacy & data", "owner": "Data Protection Officer",
+      "version": "3.1", "reviewed": "2026-09-02", "next": "2027-03-02", "share": "Yes",
+      "link": "https://example.com/privacy.pdf" }
+  ],
+  "clientQuestions": [["Where is our data stored?", "Privacy notice"]]
+}
+```
+
+- `share` is `Yes` (send to clients), `Under NDA` or `Internal`. Add `"status": "Draft"` for documents still being written.
+- Status comes from `next`: overdue once the date passes, review due within 30 days, otherwise current.
 
 ## Usage tracking with Pendo
 
@@ -63,9 +84,13 @@ The backlog lives on the [Okana roadmap](../../projects) board. `scripts/setup-p
 1. Pilot with one product team and log feedback as issues
 2. Connect Salesforce for live ARR
 3. Weekly competitor review collection and AI theme summaries
-4. v2 pages: Geo position, Product health, Transformation readiness, Sales status, Documents
+4. v3 pages: Geo position, Transformation readiness, Sales status
 5. Sign-in with Leadership and Sales roles
 
+
+## Releases
+
+See [CHANGELOG.md](CHANGELOG.md) and the [Releases](../../releases) page.
 
 ## About
 

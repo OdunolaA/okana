@@ -174,6 +174,14 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .tip:hover::after,.tip:focus::after{display:block}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted)}
 .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px 12px;cursor:pointer;min-height:34px}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.kpi{gap:8px}
+.kpi .big{font-size:28px}
+.stackbar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--grey-soft)}
+.stackbar div{height:100%}
+.version{font-size:11px;color:var(--bar-muted);padding:0 6px}
 .step{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:14px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line)}
 .step:last-child{border-bottom:0}
 .num{width:32px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--grey-soft);color:var(--muted)}
@@ -192,15 +200,16 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
     <a href="#about" data-tab="about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5v.01"></path></svg>About the product</a>
     <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Product progress</a>
     <a href="#market" data-tab="market"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg>Market position</a>
-    <span class="navlabel">Coming in v2</span>
-    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Geo position<em>V2</em></span>
-    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"></path></svg>Product health<em>V2</em></span>
-    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"></path></svg>Transformation<em>V2</em></span>
-    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg>Sales status<em>V2</em></span>
-    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6v18h12V7z"></path><path d="M14 3v4h4M9 13h6M9 17h6"></path></svg>Documents<em>V2</em></span>
+    <a href="#health" data-tab="health"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2-5 4 10 2-5h6"></path></svg>Product health</a>
+    <a href="#documents" data-tab="documents"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6v18h12V7z"></path><path d="M14 3v4h4M9 13h6M9 17h6"></path></svg>Documents</a>
+    <span class="navlabel">Coming next</span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"></path></svg>Geo position<em>V3</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"></path></svg>Transformation<em>V3</em></span>
+    <span class="soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"></path><path d="M15 7h6v6"></path></svg>Sales status<em>V3</em></span>
   </nav>
   <nav class="nav" id="salesNav" aria-label="Sales sections" hidden>
     <a href="#sales" data-tab="sales" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"></rect><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"></path></svg>Demo prep</a>
+    <a href="#documents" data-tab="documents"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6v18h12V7z"></path><path d="M14 3v4h4M9 13h6M9 17h6"></path></svg>Documents to send</a>
   </nav>
   <div class="side-foot">
     <nav class="nav" id="settingsNav" aria-label="Settings"><a href="#settings" data-tab="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings</a></nav>
@@ -209,6 +218,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
       <button type="button" data-view="leadership">Leadership</button>
       <button type="button" data-view="sales">Sales</button>
     </div>
+    <span class="version">Okana v2.0</span>
   </div>
 </aside>
 <div class="scrim" id="scrim" hidden></div>
@@ -236,6 +246,8 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
     <section id="v-progress" class="stack" hidden></section>
     <section id="v-market" class="stack" hidden></section>
     <section id="v-sales" class="stack" hidden></section>
+    <section id="v-health" class="stack" hidden></section>
+    <section id="v-documents" class="stack" hidden></section>
   </div>
 </main>
 </div>
@@ -251,7 +263,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 // ---------- Settings ----------
 // Pendo: paste your app's Pendo API key to turn on usage tracking. Leave empty to keep tracking off.
 // EU Pendo accounts use "https://cdn.eu.pendo.io".
-const OKANA_CONFIG = { pendoApiKey: "", pendoCdn: "https://cdn.pendo.io", liveJiraFile: "data/jira.json" };
+const OKANA_CONFIG = { pendoApiKey: "", pendoCdn: "https://cdn.pendo.io", liveJiraFile: "data/jira.json", documentsFile: "data/documents.json" };
 
 // ---------- Sample data, shaped like the source systems. ----------
 // jiraAdapter is replaced by live data from data/jira.json when the GitHub Action has synced Jira (see loadLiveJira below).
@@ -271,6 +283,21 @@ const jiraAdapter = {
     ["Auto-scheduling GA", "22 Jan 2027", "At risk"], ["ISO 27001 audit", "10 Feb 2027", "On track"], ["DACH launch", "15 Mar 2027", "Not started"]
   ],
   releases: () => [["v2.4", "6 Nov", "SAP PM connector"], ["v2.3", "23 Oct", "Mobile alerts"], ["v2.2", "9 Oct", "Model accuracy improvements"]]
+};
+// Product health, from Jira bugs, epics and the backlog. Replaced by the "health" block in data/jira.json when synced.
+const healthAdapter = {
+  openBugs: () => ({ Highest: 2, High: 7, Medium: 19, Low: 24 }),
+  // [priority, target days to fix, average days to fix over the last 90 days]
+  fixTime: () => [["Highest", 2, 1.5], ["High", 5, 6.8], ["Medium", 15, 11.9], ["Low", 30, 41.2]],
+  bugFlow: () => ({
+    week: { labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"], opened: [1, 0, 4, 2, 3, 2, 3], closed: [0, 1, 3, 4, 2, 3, 4] },
+    month: { labels: ["17 Oct", "24 Oct", "31 Oct", "7 Nov"], opened: [11, 9, 12, 8], closed: [9, 12, 10, 13] },
+    quarter: { labels: ["Sep", "Oct", "Nov"], opened: [38, 41, 20], closed: [35, 44, 23] },
+    year: { labels: ["Q1 26", "Q2 26", "Q3 26", "Q4 26"], opened: [102, 118, 111, 61], closed: [95, 121, 116, 64] }
+  }),
+  // Median days from an epic being created to it being done
+  timeToFeature: () => ({ days: 74, previous: 88, recent: [["SAP PM connector", 96], ["Mobile alerts", 61], ["Alert noise filter", 48], ["Role-based access", 70]] }),
+  backlog: () => ({ items: 148, old: 37 })
 };
 const salesforceAdapter = { arr: () => ({ current: 1.2, goal: 5.0, planToDate: 0.30 }) };
 const reviewsAdapter = {
@@ -318,9 +345,37 @@ const DATA = {
     ["Competitor B", "30% fewer false alarms since Sprint 13.", "Multi-site view (ours ships Dec).", "Alerts your engineers will trust."],
     ["Competitor C", "Stronger prediction on rotating equipment.", "Auto-scheduling (ours ships Jan).", "Know what will fail, not just that it might."]
   ],
+  // Policy and compliance documents. Replaced by data/documents.json if that file exists in the repository.
+  // share: "Yes" (send to clients), "Under NDA", or "Internal". status "Draft" for documents still being written.
+  documents: [
+    { title: "Privacy notice", category: "Privacy & data", owner: "Data Protection Officer", version: "3.1", reviewed: "2026-09-02", next: "2027-03-02", share: "Yes" },
+    { title: "Data processing agreement (GDPR)", category: "Privacy & data", owner: "Legal", version: "2.4", reviewed: "2026-07-15", next: "2027-01-15", share: "Yes" },
+    { title: "Data retention policy", category: "Privacy & data", owner: "Data Protection Officer", version: "1.2", reviewed: "2025-11-10", next: "2026-11-10", share: "Internal" },
+    { title: "Information security policy", category: "Security", owner: "Security Lead", version: "4.0", reviewed: "2026-08-20", next: "2027-02-20", share: "Yes" },
+    { title: "Penetration test summary", category: "Security", owner: "Security Lead", version: "1.0", reviewed: "2025-12-01", next: "2026-12-01", share: "Under NDA" },
+    { title: "ISO 27001 statement of applicability", category: "Security", owner: "Security Lead", version: "0.8", reviewed: "2026-10-30", next: "2027-02-10", share: "Under NDA", status: "Draft" },
+    { title: "Incident response plan", category: "Security", owner: "Engineering Director", version: "1.5", reviewed: "2026-05-05", next: "2026-11-05", share: "Internal" },
+    { title: "Export control classification", category: "Export control", owner: "Legal", version: "1.1", reviewed: "2026-06-12", next: "2027-06-12", share: "Yes" },
+    { title: "Sanctions screening procedure", category: "Export control", owner: "Legal", version: "1.3", reviewed: "2026-09-30", next: "2027-03-30", share: "Internal" },
+    { title: "Master subscription agreement", category: "Legal", owner: "Legal", version: "5.2", reviewed: "2026-03-03", next: "2027-03-03", share: "Yes" },
+    { title: "Service level agreement", category: "Legal", owner: "Product Manager", version: "2.0", reviewed: "2026-10-18", next: "2027-04-18", share: "Yes" },
+    { title: "AI use policy", category: "AI", owner: "Product Manager", version: "1.4", reviewed: "2026-10-01", next: "2027-04-01", share: "Yes" },
+    { title: "Model card: failure prediction", category: "AI", owner: "Engineering Director", version: "2.1", reviewed: "2026-10-28", next: "2027-01-28", share: "Yes" },
+    { title: "EU AI Act risk assessment", category: "AI", owner: "Legal", version: "1.0", reviewed: "2026-09-25", next: "2026-12-04", share: "Internal" }
+  ],
+  // Questions clients ask in deals, and the document that answers each
+  clientQuestions: [
+    ["Where is our data stored, and who can see it?", "Data processing agreement (GDPR)"],
+    ["Do you use our data to train your AI models?", "AI use policy"],
+    ["How accurate are the failure predictions?", "Model card: failure prediction"],
+    ["Are you ISO 27001 certified?", "Information security policy"],
+    ["Can we use Atlas at our sites outside the UK and EU?", "Export control classification"],
+    ["What uptime do you guarantee?", "Service level agreement"]
+  ],
   audit: [
     ["13 Nov 2026, 14:20", "Jira sync", "Sprint 14 burndown updated (27 points left)"],
     ["13 Nov 2026, 06:00", "Review sync", "Okana score recalculated: 73"],
+    ["13 Nov 2026, 06:00", "Document check", "Data retention policy and Incident response plan are overdue for review"],
     ["12 Nov 2026, 17:05", "Amara Okafor", "Auto-scheduling GA marked At risk"],
     ["11 Nov 2026, 10:42", "James Holt", "Added Oracle EAM connector to Next"],
     ["6 Nov 2026, 16:30", "Priya Nair", "Released v2.4 (SAP PM connector)"]
@@ -361,7 +416,11 @@ function applyTheme() {
   else document.documentElement.setAttribute("data-theme", prefs.theme);
 }
 applyTheme();
-const TITLES = { settings: "Settings", setup: "Setup guide", about: "About the product", progress: "Product progress", market: "Market position", sales: "Demo prep" };
+const TITLES = { settings: "Settings", setup: "Setup guide", about: "About the product", progress: "Product progress", market: "Market position", health: "Product health", documents: "Documents", sales: "Demo prep" };
+const LEAD_TABS = ["setup", "about", "progress", "market", "health", "documents"];
+const SALES_TABS = ["sales", "documents"];
+state.salesTab = "sales";
+state.docCat = "All";
 try { const v = localStorage.getItem("okana-view"); if (v === "sales" || v === "leadership") state.view = v; } catch (e) {}
 
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2200); }
@@ -552,11 +611,166 @@ function renderSales() {
   <div class="grid g3">${DATA.battlecards.map(([c, w, l, s]) => `<div class="card"><b style="font-size:15px">vs ${c}</b><div class="win small"><b style="color:var(--rag-g-ink)">We win:</b> ${esc(w)}</div><div class="lose small"><b style="color:var(--amber-ink)">They win:</b> ${esc(l)}</div><div class="small"><b>Say:</b> "${esc(s)}"</div></div>`).join("")}</div>`;
 }
 
+// ---------- Product health (v2) ----------
+const PRIORITIES = ["Highest", "High", "Medium", "Low"];
+const PRIORITY_COLOUR = { Highest: "var(--rag-r)", High: "var(--rag-a)", Medium: "var(--blue)", Low: "var(--grey-mark)" };
+const BAND_LABEL = { g: "Healthy", a: "Watch", r: "Act now" };
+function flowChart(f) {
+  const w = 560, h = 200, L = 30, R = 8, T = 18, B = 24;
+  const max = Math.max(1, ...f.opened, ...f.closed), n = f.labels.length, gw = (w - L - R) / n, bw = Math.min(26, gw / 3);
+  const y = (v) => T + (1 - v / max) * (h - T - B);
+  let out = "";
+  for (const g of [0, Math.round(max / 2), max]) out += `<line x1="${L}" x2="${w - R}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)"></line><text x="${L - 6}" y="${y(g) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${g}</text>`;
+  f.labels.forEach((l, i) => {
+    const cx = L + gw * i + gw / 2;
+    const bar = (v, x, c) => `<rect x="${x.toFixed(1)}" y="${y(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(y(0) - y(v)).toFixed(1)}" rx="2" fill="${c}"></rect><text x="${(x + bw / 2).toFixed(1)}" y="${(y(v) - 4).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--muted)">${v}</text>`;
+    out += bar(f.opened[i], cx - bw - 2, "var(--blue)") + bar(f.closed[i], cx + 2, "var(--aqua)");
+    out += `<text x="${cx.toFixed(1)}" y="${h - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${esc(l)}</text>`;
+  });
+  const o = f.opened.reduce((s, v) => s + v, 0), c = f.closed.reduce((s, v) => s + v, 0);
+  return `<svg width="100%" viewBox="0 0 ${w} ${h}" role="img" aria-label="${o} bugs opened and ${c} fixed">${out}</svg>`;
+}
+function renderHealth() {
+  const ob = healthAdapter.openBugs(), ft = healthAdapter.fixTime(), flow = healthAdapter.bugFlow()[state.period];
+  const ttf = healthAdapter.timeToFeature(), bl = healthAdapter.backlog();
+  const total = PRIORITIES.reduce((s, p) => s + (ob[p] || 0), 0), crit = (ob.Highest || 0) + (ob.High || 0);
+  const critBand = crit <= 5 ? "g" : crit <= 10 ? "a" : "r";
+  const measured = ft.filter((r) => r[2] != null), within = measured.filter((r) => r[2] <= r[1]).length;
+  const fixBand = measured.length === 0 ? null : within === measured.length ? "g" : within >= measured.length / 2 ? "a" : "r";
+  const ttfBand = ttf.days == null ? null : ttf.days <= 90 ? "g" : ttf.days <= 120 ? "a" : "r";
+  const oldPct = bl.items ? Math.round(bl.old / bl.items * 100) : 0, blBand = oldPct < 20 ? "g" : oldPct < 35 ? "a" : "r";
+  const bands = [critBand, fixBand, ttfBand, blBand].filter(Boolean);
+  const overall = bands.includes("r") ? "r" : bands.includes("a") ? "a" : "g";
+  const attention = [];
+  if (critBand !== "g") attention.push([critBand, `${crit} high-priority bugs are open (Highest ${ob.Highest || 0}, High ${ob.High || 0}). Aim for 5 or fewer.`]);
+  measured.filter((r) => r[2] > r[1]).forEach(([p, t, a]) => attention.push([a > t * 1.5 ? "r" : "a", `${p}-priority bugs take ${a} days to fix, against a ${t}-day target.`]));
+  if (ttfBand && ttfBand !== "g") attention.push([ttfBand, `Features take ${ttf.days} days from idea to done. Aim for 90 or fewer.`]);
+  if (blBand !== "g") attention.push([blBand, `${oldPct}% of the backlog (${bl.old} ${bl.old === 1 ? "item" : "items"}) ${bl.old === 1 ? "is" : "are"} older than 90 days. Review or close old items.`]);
+  const o = flow.opened.reduce((s, v) => s + v, 0), c = flow.closed.reduce((s, v) => s + v, 0);
+  const maxBug = Math.max(1, ...PRIORITIES.map((p) => ob[p] || 0));
+  const ms = jiraAdapter.milestones(), road = jiraAdapter.roadmap();
+  const msCount = (st) => ms.filter((m) => m[2] === st).length;
+  const live = DATA.product.available.length, building = road.filter((r) => r.lane === "now").length, planned = road.length - building, all = live + building + planned;
+  const seg = (n, of, colour) => of ? `<div style="width:${n / of * 100}%;background:${colour}"></div>` : "";
+  const kpi = (label, tip, value, band, note) => `<div class="card kpi"><div style="display:flex;align-items:center;gap:8px"><span class="eyebrow">${label}</span><button type="button" class="tip" aria-label="About ${label}" data-tip="${esc(tip)}">i</button></div>
+      <span class="big" style="color:${band ? `var(--rag-${band}-ink)` : "var(--muted)"}">${value}</span><span class="small muted">${note}</span>${band ? `<span class="pill rag-${band}" style="align-self:flex-start">${BAND_LABEL[band]}</span>` : `<span class="pill p-none" style="align-self:flex-start">No data yet</span>`}</div>`;
+  $("v-health").innerHTML = `
+  <div class="head"><div><h1>Product health</h1><p class="lede">Is Atlas getting more stable and quicker to change? Bugs, fix times, delivery speed and backlog, from Jira.</p></div><span class="pill rag-${overall}" style="font-size:14px;padding:6px 14px">Overall: ${BAND_LABEL[overall]}</span></div>
+  <div class="grid g4">
+    ${kpi("High-priority bugs", "Open bugs marked Highest or High. Green: 5 or fewer. Amber: 6 to 10. Red: more than 10.", crit, critBand, `${total} open bugs in total`)}
+    ${kpi("Fix time vs target", "How many priorities are fixed within their target, on average over the last 90 days. Green: all. Amber: at least half. Red: fewer than half.", measured.length ? `${within}/${measured.length}` : "–", fixBand, "priorities fixed within target")}
+    ${kpi("Time to feature", "Median days from an epic being created in Jira to it being done. Green: 90 days or fewer. Amber: up to 120. Red: over 120.", ttf.days == null ? "–" : ttf.days + " days", ttfBand, ttf.previous ? `${ttf.days <= ttf.previous ? "▼" : "▲"} ${Math.abs(ttf.previous - ttf.days)} days vs the 6 months before` : "idea to done, median")}
+    ${kpi("Backlog age", "Share of backlog items older than 90 days. Green: under 20%. Amber: 20 to 34%. Red: 35% or more.", oldPct + "%", blBand, `${bl.old} of ${bl.items} items older than 90 days`)}
+  </div>
+  <div class="card" style="border-left:5px solid var(--rag-${overall})"><h2>Needs attention</h2>
+    ${attention.length ? attention.map(([b, t]) => `<div><span class="dot ${b}"></span>${esc(t)}</div>`).join("") : `<span class="muted">Nothing needs attention right now.</span>`}</div>
+  <div class="grid g-mkt2">
+    <div class="card"><div class="head"><h2>Bugs opened vs fixed · ${PERIOD_LABEL[state.period]}</h2><div class="legend"><span><i style="background:var(--blue)"></i>Opened</span><span><i style="background:var(--aqua)"></i>Fixed</span></div></div>
+      ${flowChart(flow)}
+      <p class="small" style="margin:0"><b>Reading it:</b> ${o} bugs opened and ${c} fixed ${PERIOD_LABEL[state.period]}, so the open bug count ${c >= o ? `fell by ${c - o}` : `grew by ${o - c}`}.</p></div>
+    <div class="card"><h2>Open bugs by priority</h2>
+      ${PRIORITIES.map((p) => `<div><div style="display:flex;justify-content:space-between"><span>${p}</span><b>${ob[p] || 0}</b></div><div class="mbar" style="height:10px;margin-top:4px"><div style="width:${Math.round((ob[p] || 0) / maxBug * 100)}%;background:${PRIORITY_COLOUR[p]}"></div></div></div>`).join("")}
+      <span class="small muted">${total} open · Source: Jira</span></div>
+  </div>
+  <div class="grid g-mkt2">
+    <div class="card"><h2>Time to fix, by priority</h2>
+      <div class="tablewrap"><table><thead><tr><th>Priority</th><th>Target</th><th>Actual (90 days)</th><th>Status</th></tr></thead><tbody>
+      ${ft.map(([p, t, a]) => `<tr><td><b>${p}</b></td><td>${t} days</td><td>${a == null ? "–" : a + " days"}</td><td>${a == null ? `<span class="pill p-none">No fixes yet</span>` : a <= t ? `<span class="pill rag-g">Within target</span>` : `<span class="pill rag-${a > t * 1.5 ? "r" : "a"}">Over by ${Math.round((a - t) * 10) / 10} days</span>`}</td></tr>`).join("")}
+      </tbody></table></div></div>
+    <div class="card"><h2>Recently delivered features</h2>
+      ${ttf.recent && ttf.recent.length ? ttf.recent.map(([n, d]) => `<div class="row"><span>${esc(n)}</span><span class="pill rag-${d <= 90 ? "g" : d <= 120 ? "a" : "r"}">${d} days</span></div>`).join("") : `<span class="muted">No epics finished in the last year yet.</span>`}
+      <span class="small muted">Days from idea (epic created) to done.</span></div>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h2>Roadmap health</h2>
+      <div class="stackbar">${seg(msCount("On track"), ms.length, "var(--rag-g)")}${seg(msCount("At risk"), ms.length, "var(--rag-a)")}${seg(msCount("Off track"), ms.length, "var(--rag-r)")}${seg(msCount("Not started"), ms.length, "var(--grey-mark)")}</div>
+      <div class="small"><span class="dot g"></span>${msCount("On track")} on track · <span class="dot a"></span>${msCount("At risk")} at risk · <span class="dot r"></span>${msCount("Off track")} off track · ${msCount("Not started")} not started</div>
+      <span class="small muted">Next ${ms.length} milestones. Roadmap confidence: ${["High", "Medium", "Low"].map((k) => `${road.filter((r) => r.conf === k).length} ${k.toLowerCase()}`).join(", ")}.</span></div>
+    <div class="card"><h2>Feature completeness</h2>
+      <div class="stackbar">${seg(live, all, "var(--aqua)")}${seg(building, all, "var(--blue)")}${seg(planned, all, "var(--grey-mark)")}</div>
+      <div class="small"><b style="color:var(--aqua-ink)">${live}</b> live · <b style="color:var(--blue-ink)">${building}</b> being built now · <b>${planned}</b> planned</div>
+      <span class="small muted">${all ? Math.round(live / all * 100) : 0}% of the features on the current plan are live.</span></div>
+    <div class="card"><h2>Feature usage</h2><span class="pill rag-r" style="align-self:flex-start">Not connected</span>
+      <span class="muted">Connect Pendo to see which features people use and how often.</span><a href="#setup">Open the setup guide →</a></div>
+  </div>
+  <p class="small muted" style="margin:0">Sources: Jira bugs, epics and backlog. Targets are set by the product team.</p>`;
+}
+
+// ---------- Documents (v2) ----------
+let DOCS_AS_OF = new Date("2026-11-13T12:00:00"); // sample data date; becomes today when data/documents.json is loaded
+const fmtDay = (iso) => iso ? new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "–";
+function docStatus(d) {
+  if (d.status === "Draft") return ["Draft", "p-none"];
+  const days = (new Date(d.next + "T12:00:00") - DOCS_AS_OF) / 86400000;
+  return days < 0 ? ["Overdue", "rag-r"] : days <= 30 ? ["Review due", "rag-a"] : ["Current", "rag-g"];
+}
+const SHARE_PILL = { Yes: ["Clients", "p-info"], "Under NDA": ["Under NDA", "p-warn"], Internal: ["Internal", "p-none"] };
+const docTitle = (d) => d.link ? `<a href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.title)}</a>` : `<button type="button" class="linkbtn" style="font-size:14px;text-align:left" data-doc="${esc(d.title)}">${esc(d.title)}</button>`;
+const sendable = () => DATA.documents.filter((d) => d.share !== "Internal" && d.status !== "Draft");
+function docsText() {
+  const ready = sendable().filter((d) => docStatus(d)[0] !== "Overdue");
+  return [`${DATA.product.name}: documents available on request`, "", ...ready.map((d) => `- ${d.title} (v${d.version})${d.share === "Under NDA" ? ", under NDA" : ""}`)].join("\n");
+}
+function renderDocuments() {
+  const docs = DATA.documents, byTitle = Object.fromEntries(docs.map((d) => [d.title, d]));
+  const questions = `<div class="card"><h2>Questions clients ask</h2>${DATA.clientQuestions.map(([q, t]) => {
+    const d = byTitle[t], st = d ? docStatus(d) : null;
+    return `<div class="row" style="align-items:flex-start"><div><div style="font-weight:600">${esc(q)}</div><div class="small muted">Send: ${esc(t)}</div></div>${st ? `<span class="pill ${st[1]}">${st[0]}</span>` : ""}</div>`;
+  }).join("")}</div>`;
+  if (state.view === "sales") {
+    const list = sendable();
+    $("v-documents").innerHTML = `
+    <div><span class="eyebrow" style="color:var(--aqua)">Documents to send · ${esc(DATA.product.name)}</span><h1 style="margin-top:6px">What you can send to a client</h1><p class="lede">Only documents cleared for clients appear here. Internal policies stay in the Leadership view.</p></div>
+    <div class="grid g-main">
+      <div class="card"><div class="head"><h2>Ready to send</h2><button type="button" class="btn" data-copy="docs">Copy list for client</button></div>
+        <div>${list.map((d) => { const st = docStatus(d)[0], p = st === "Overdue" ? ["Ask Legal first", "rag-a"] : d.share === "Under NDA" ? ["NDA first", "p-warn"] : ["Ready to send", "rag-g"];
+          return `<div class="row"><div style="min-width:0">${docTitle(d)}<div class="small muted">${esc(d.category)} · v${esc(d.version)}</div></div><span class="pill ${p[1]}">${p[0]}</span></div>`; }).join("")}</div></div>
+      ${questions}
+    </div>`;
+    return;
+  }
+  const cats = ["All", ...new Set(docs.map((d) => d.category))];
+  if (!cats.includes(state.docCat)) state.docCat = "All";
+  const shown = state.docCat === "All" ? docs : docs.filter((d) => d.category === state.docCat);
+  const count = (s) => docs.filter((d) => docStatus(d)[0] === s).length;
+  const attention = docs.filter((d) => docStatus(d)[0] !== "Current").sort((a, b) => a.next.localeCompare(b.next));
+  const kpi = (label, n, colour, note) => `<div class="card kpi"><span class="eyebrow">${label}</span><span class="big" style="color:${colour}">${n}</span><span class="small muted">${note}</span></div>`;
+  $("v-documents").innerHTML = `
+  <div><h1>Documents</h1><p class="lede">Policies and compliance documents that clients and auditors ask for. Each has an owner and a review date, so nothing goes out of date unnoticed.</p></div>
+  <div class="grid g4">
+    ${kpi("Documents", docs.length, "var(--ink)", `${sendable().length} can be shared with clients`)}
+    ${kpi("Current", count("Current"), "var(--rag-g-ink)", "next review more than 30 days away")}
+    ${kpi("Review due", count("Review due"), "var(--rag-a-ink)", "review due in the next 30 days")}
+    ${kpi("Overdue", count("Overdue"), "var(--rag-r-ink)", "review date has passed")}
+  </div>
+  <div class="grid g-main">
+    <div class="card"><div class="head"><h2>All documents</h2><span class="small muted">${shown.length} shown</span></div>
+      <div class="chips" role="group" aria-label="Filter by category">${cats.map((c) => `<button type="button" class="chip" data-doc-cat="${esc(c)}" aria-pressed="${c === state.docCat}">${esc(c)}</button>`).join("")}</div>
+      <div class="tablewrap"><table><thead><tr><th>Document</th><th>Owner</th><th>Next review</th><th>Sharing</th><th>Status</th></tr></thead><tbody>
+      ${shown.map((d) => { const st = docStatus(d), sh = SHARE_PILL[d.share] || SHARE_PILL.Internal;
+        return `<tr><td>${docTitle(d)}<div class="small muted">${esc(d.category)} · v${esc(d.version)} · reviewed ${fmtDay(d.reviewed)}</div></td><td class="small">${esc(d.owner)}</td><td class="small" style="white-space:nowrap">${fmtDay(d.next)}</td><td><span class="pill ${sh[1]}">${sh[0]}</span></td><td><span class="pill ${st[1]}">${st[0]}</span></td></tr>`; }).join("")}
+      </tbody></table></div>
+      <div class="ragkey"><span><span class="dot g"></span>Current: next review over 30 days away</span><span><span class="dot a"></span>Review due: within 30 days</span><span><span class="dot r"></span>Overdue: review date passed</span><span>Draft: still being written</span></div>
+    </div>
+    <div class="stack">
+      <div class="card"><h2>Needs attention</h2>${attention.length ? attention.map((d) => { const st = docStatus(d);
+        return `<div class="row" style="align-items:flex-start"><div><div style="font-weight:600">${esc(d.title)}</div><div class="small muted">${esc(d.owner)} · ${st[0] === "Draft" ? "draft, due " : "review "}${fmtDay(d.next)}</div></div><span class="pill ${st[1]}">${st[0]}</span></div>`; }).join("") : `<span class="muted">Every document is current.</span>`}</div>
+      ${questions}
+    </div>
+  </div>`;
+}
+document.addEventListener("click", (e) => {
+  const c = e.target.closest("[data-doc-cat]");
+  if (c) { state.docCat = c.dataset.docCat; renderDocuments(); }
+  const d = e.target.closest("[data-doc]");
+  if (d) toast(`"${d.dataset.doc}" opens here once document links are added.`);
+});
+
 const SETUP = [
   ["Add your product", "Name, team, vision, ideal customer profile and ARR goal.", "Fills the About page.", "Done"],
-  ["Connect Jira", "Sign in with a Jira admin account and pick the project and board.", "Sprints, burndown, velocity, roadmap and release notes.", "Done"],
+  ["Connect Jira", "Sign in with a Jira admin account and pick the space (project) and board.", "Sprints, burndown, velocity, roadmap and release notes.", "Done"],
   ["Connect Salesforce", "Approve read-only access to opportunities and accounts.", "ARR progress and, in v2, the Sales status page.", "Done"],
-  ["Connect Pendo", "Paste your Pendo integration key.", "Feature usage for Product health (v2).", "Not connected"],
+  ["Connect Pendo", "Paste your Pendo integration key.", "Feature usage on the Product health page.", "Not connected"],
   ["Add competitors and review sources", "Name up to 5 competitors. Okana collects their public reviews from G2, Capterra and Reddit each week.", "Feature comparison, complaint themes and the Okana score.", "In progress"],
   ["Set confidence rules", "Choose which Jira fields or labels mark a roadmap item as High, Medium or Low confidence.", "What sales can promise, and the score's roadmap weighting.", "Not started"],
   ["Invite your team", "Add leaders with Leadership access and sales staff with Sales access.", "Who sees which view.", "Not started"]
@@ -620,40 +834,41 @@ function deckText() {
 // ---------- routing and controls ----------
 function render() {
   const sales = state.view === "sales";
-  const tab = state.settings ? "settings" : sales ? "sales" : (["about", "progress", "market", "setup"].includes(state.tab) ? state.tab : "setup");
+  const tab = state.settings ? "settings" : sales ? (SALES_TABS.includes(state.salesTab) ? state.salesTab : "sales") : (LEAD_TABS.includes(state.tab) ? state.tab : "setup");
   $("tabs").hidden = sales;
   $("salesNav").hidden = !sales;
-  $("pageTitle").textContent = TITLES[tab];
-  $("periodSeg").hidden = tab === "setup" || tab === "settings";
+  $("pageTitle").textContent = sales && tab === "documents" ? "Documents to send" : TITLES[tab];
+  $("periodSeg").hidden = ["setup", "settings", "documents"].includes(tab);
   document.querySelectorAll("#settingsNav a").forEach((a) => a.setAttribute("aria-current", tab === "settings" ? "page" : "false"));
-  document.querySelectorAll("#salesNav a").forEach((a) => a.setAttribute("aria-current", tab === "sales" ? "page" : "false"));
+  document.querySelectorAll("#salesNav a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   closeMenu();
-  for (const k of ["about", "progress", "market", "sales", "setup", "settings"]) $("v-" + k).hidden = k !== tab;
+  for (const k of ["about", "progress", "market", "health", "documents", "sales", "setup", "settings"]) $("v-" + k).hidden = k !== tab;
   document.querySelectorAll("#tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
   document.querySelectorAll("#viewSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === state.view)));
   document.querySelectorAll("#periodSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.period === state.period)));
-  ({ about: renderAbout, progress: renderProgress, market: renderMarket, sales: renderSales, setup: renderSetup, settings: renderSettings })[tab]();
+  ({ about: renderAbout, progress: renderProgress, market: renderMarket, health: renderHealth, documents: renderDocuments, sales: renderSales, setup: renderSetup, settings: renderSettings })[tab]();
   if (typeof trackPage === "function") trackPage();
 }
 function fromHash() {
   const h = location.hash.slice(1);
   state.settings = h === "settings";
-  if (h === "sales") state.view = "sales";
-  else if (["about", "progress", "market", "setup"].includes(h)) { state.tab = h; state.view = "leadership"; }
+  if (h === "sales") { state.view = "sales"; state.salesTab = "sales"; }
+  else if (h === "documents" && state.view === "sales") state.salesTab = "documents";
+  else if (LEAD_TABS.includes(h)) { state.tab = h; state.view = "leadership"; }
   render();
 }
 $("viewSeg").addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return;
   state.view = b.dataset.view; state.settings = false;
   try { localStorage.setItem("okana-view", state.view); } catch (err) {}
-  setHash(state.view === "sales" ? "sales" : state.tab);
+  setHash(state.view === "sales" ? state.salesTab : state.tab);
   render();
 });
 function openMenu() { $("side").classList.add("open"); $("scrim").hidden = false; $("menuBtn").setAttribute("aria-expanded", "true"); }
 function closeMenu() { $("side").classList.remove("open"); $("scrim").hidden = true; $("menuBtn").setAttribute("aria-expanded", "false"); }
 $("menuBtn").addEventListener("click", openMenu);
 $("scrim").addEventListener("click", closeMenu);
-$("salesNav").addEventListener("click", (e) => { if (e.target.closest("a")) { e.preventDefault(); state.settings = false; setHash("sales"); render(); } });
+$("salesNav").addEventListener("click", (e) => { const a = e.target.closest("a[data-tab]"); if (a) { e.preventDefault(); state.settings = false; state.salesTab = a.dataset.tab; setHash(state.salesTab); render(); window.scrollTo(0, 0); } });
 $("settingsNav").addEventListener("click", (e) => { if (e.target.closest("a")) { e.preventDefault(); state.settings = true; setHash("settings"); render(); window.scrollTo(0, 0); } });
 function setHash(h) { try { history.replaceState(null, "", "#" + h); } catch (err) {} }
 $("tabs").addEventListener("click", (e) => {
@@ -663,7 +878,7 @@ $("tabs").addEventListener("click", (e) => {
 document.addEventListener("click", (e) => {
   const a = e.target.closest("main a[href^='#']"); if (!a) return;
   const h = a.getAttribute("href").slice(1);
-  if (["about", "progress", "market", "setup"].includes(h)) { e.preventDefault(); state.settings = false; state.tab = h; state.view = "leadership"; setHash(h); render(); window.scrollTo(0, 0); }
+  if (LEAD_TABS.includes(h)) { e.preventDefault(); state.settings = false; state.tab = h; state.view = "leadership"; setHash(h); render(); window.scrollTo(0, 0); }
 });
 $("periodSeg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; state.period = b.dataset.period; render(); });
 document.addEventListener("click", (e) => {
@@ -671,7 +886,7 @@ document.addEventListener("click", (e) => {
   if (demo) toast(`"${demo.dataset.demo}" recording plays here once video links are connected.`);
   const copy = e.target.closest("[data-copy]");
   if (copy) {
-    const text = copy.dataset.copy === "deck" ? deckText() : talkingPoints().join("\n");
+    const text = copy.dataset.copy === "deck" ? deckText() : copy.dataset.copy === "docs" ? docsText() : talkingPoints().join("\n");
     try { navigator.clipboard.writeText(text).then(() => toast("Copied. Paste it into your deck."), () => toast("Copy isn't allowed here. Select the text instead.")); }
     catch (err) { toast("Copy isn't allowed here. Select the text instead."); }
   }
@@ -700,6 +915,14 @@ async function loadLiveJira() {
   if (has(d.roadmap)) jiraAdapter.roadmap = () => d.roadmap;
   if (has(d.milestones)) jiraAdapter.milestones = () => d.milestones;
   if (has(d.releases)) jiraAdapter.releases = () => d.releases;
+  const hd = d.health;
+  if (hd && hd.openBugs) {
+    healthAdapter.openBugs = () => hd.openBugs;
+    if (has(hd.fixTime)) healthAdapter.fixTime = () => hd.fixTime;
+    if (hd.bugFlow) healthAdapter.bugFlow = () => hd.bugFlow;
+    if (hd.timeToFeature) healthAdapter.timeToFeature = () => hd.timeToFeature;
+    if (hd.backlog) healthAdapter.backlog = () => hd.backlog;
+  }
   const when = new Date(d.fetchedAt);
   const label = isNaN(when) ? "" : when.toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
   $("dataBadge").textContent = "Live Jira data · other sections sample";
@@ -709,6 +932,22 @@ async function loadLiveJira() {
   render();
 }
 loadLiveJira();
+
+// ---------- Documents list (optional data/documents.json, edited by hand in the repository) ----------
+async function loadDocuments() {
+  try {
+    const r = await fetch(OKANA_CONFIG.documentsFile, { cache: "no-store" });
+    if (!r.ok) return;
+    const d = await r.json();
+    const list = Array.isArray(d) ? d : d && d.documents;
+    if (!Array.isArray(list) || list.length === 0) return;
+    DATA.documents = list;
+    if (d.clientQuestions) DATA.clientQuestions = d.clientQuestions;
+    DOCS_AS_OF = new Date();
+    render();
+  } catch (err) {}
+}
+loadDocuments();
 
 // ---------- Pendo usage tracking (only runs when a key is set in OKANA_CONFIG) ----------
 function startPendo() {
@@ -729,7 +968,7 @@ function startPendo() {
 }
 function trackPage() {
   if (OKANA_CONFIG.pendoApiKey && window.pendo && window.pendo.track) {
-    const tab = state.view === "sales" ? "sales" : state.tab;
+    const tab = state.settings ? "settings" : state.view === "sales" ? state.salesTab : state.tab;
     window.pendo.track("Okana page viewed", { page: tab, view: state.view, period: state.period });
   }
 }
