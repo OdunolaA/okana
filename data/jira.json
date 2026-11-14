@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-14T14:12:14.640Z",
+  "fetchedAt": "2026-11-14T18:46:45.386Z",
   "projectKey": "ATLAS",
   "boardId": "1",
   "sprint": {
@@ -62,5 +62,132 @@
       "On track"
     ]
   ],
-  "releases": []
+  "releases": [],
+  "health": {
+    "openBugs": {
+      "Highest": 1,
+      "High": 2,
+      "Medium": 1,
+      "Low": 1
+    },
+    "fixTime": [
+      [
+        "Highest",
+        2,
+        null
+      ],
+      [
+        "High",
+        5,
+        null
+      ],
+      [
+        "Medium",
+        15,
+        null
+      ],
+      [
+        "Low",
+        30,
+        null
+      ]
+    ],
+    "bugFlow": {
+      "week": {
+        "labels": [
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat"
+        ],
+        "opened": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "month": {
+        "labels": [
+          "18 Oct",
+          "25 Oct",
+          "1 Nov",
+          "8 Nov"
+        ],
+        "opened": [
+          0,
+          0,
+          0,
+          5
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "quarter": {
+        "labels": [
+          "Sept",
+          "Oct",
+          "Nov"
+        ],
+        "opened": [
+          0,
+          0,
+          5
+        ],
+        "closed": [
+          0,
+          0,
+          0
+        ]
+      },
+      "year": {
+        "labels": [
+          "Q1 26",
+          "Q2 26",
+          "Q3 26",
+          "Q4 26"
+        ],
+        "opened": [
+          0,
+          0,
+          0,
+          5
+        ],
+        "closed": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "timeToFeature": {
+      "days": null,
+      "previous": null,
+      "recent": []
+    },
+    "backlog": {
+      "items": 12,
+      "old": 0
+    }
+  }
 }
