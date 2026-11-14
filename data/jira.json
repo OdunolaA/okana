@@ -1,0 +1,66 @@
+{
+  "fetchedAt": "2026-11-14T14:12:14.640Z",
+  "projectKey": "ATLAS",
+  "boardId": "1",
+  "sprint": {
+    "number": 1,
+    "goal": "SCRUM Sprint 1",
+    "day": 0,
+    "length": 14,
+    "total": 18,
+    "remaining": [
+      16
+    ]
+  },
+  "velocity": [
+    [
+      "S0",
+      13
+    ]
+  ],
+  "roadmap": [
+    {
+      "name": "Multi-site dashboard",
+      "when": "Dec 2026",
+      "lane": "now",
+      "conf": "High"
+    },
+    {
+      "name": "Auto-scheduling",
+      "when": "Jan 2027",
+      "lane": "now",
+      "conf": "High"
+    },
+    {
+      "name": "Oracle EAM connector",
+      "when": "Mar 2027",
+      "lane": "next",
+      "conf": "Medium"
+    },
+    {
+      "name": "Spare parts forecasting",
+      "when": "Mar 2027",
+      "lane": "next",
+      "conf": "Medium"
+    },
+    {
+      "name": "Offline mobile app ",
+      "when": "Sept 2027",
+      "lane": "later",
+      "conf": "Low"
+    }
+  ],
+  "milestones": [
+    [
+      "v1.0",
+      "12 Dec 2026",
+      "Not started"
+    ],
+    [
+      "v1.1",
+      "9 Jan 2027",
+      "On track"
+    ]
+  ],
+  "releases": []
+}
