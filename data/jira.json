@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-15T22:57:03.602Z",
+  "fetchedAt": "2026-11-16T02:50:54.398Z",
   "projectKey": "ATLAS",
   "boardId": "1",
   "sprint": {
@@ -96,21 +96,21 @@
     "bugFlow": {
       "week": {
         "labels": [
-          "Mon",
           "Tue",
           "Wed",
           "Thu",
           "Fri",
           "Sat",
-          "Sun"
+          "Sun",
+          "Mon"
         ],
         "opened": [
           0,
           0,
           0,
           0,
-          0,
           5,
+          0,
           0
         ],
         "closed": [
@@ -125,10 +125,10 @@
       },
       "month": {
         "labels": [
-          "19 Oct",
-          "26 Oct",
-          "2 Nov",
-          "9 Nov"
+          "20 Oct",
+          "27 Oct",
+          "3 Nov",
+          "10 Nov"
         ],
         "opened": [
           0,
