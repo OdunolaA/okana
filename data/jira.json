@@ -1,14 +1,15 @@
 {
-  "fetchedAt": "2026-11-20T13:08:17.623Z",
+  "fetchedAt": "2026-11-20T21:16:02.093Z",
   "projectKey": "ATLAS",
   "boardId": "1",
   "sprint": {
     "number": 1,
     "goal": "SCRUM Sprint 1",
-    "day": 5,
+    "day": 6,
     "length": 14,
     "total": 18,
     "remaining": [
+      16,
       16,
       16,
       16,
