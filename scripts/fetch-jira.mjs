@@ -146,13 +146,23 @@ async function main() {
   const now = new Date();
 
   // Current sprint
-  const active = await all(`/rest/agile/1.0/board/${BOARD}/sprint?state=active`, "values");
-  if (active.length === 0) throw new Error("No active sprint on board " + BOARD + ".");
-  const sp = active[0];
+  // Use the active sprint. Between sprints, show the most recent closed sprint (or the next planned one)
+  // instead of failing, so the rest of the data keeps updating.
+  let sp = (await all(`/rest/agile/1.0/board/${BOARD}/sprint?state=active`, "values"))[0];
+  let sprintState = "active";
+  if (!sp) {
+    const closedSprints = await all(`/rest/agile/1.0/board/${BOARD}/sprint?state=closed`, "values");
+    sp = closedSprints.sort((a, b) => new Date(b.completeDate || b.endDate) - new Date(a.completeDate || a.endDate))[0];
+    sprintState = "closed";
+    if (!sp) { sp = (await all(`/rest/agile/1.0/board/${BOARD}/sprint?state=future`, "values"))[0]; sprintState = "future"; }
+    if (!sp) throw new Error("Board " + BOARD + " has no sprints yet. Create and start a sprint in Jira.");
+    console.log(`No active sprint on board ${BOARD}, so showing the ${sprintState} sprint "${sp.name}". Start the next sprint in Jira to track it live.`);
+  }
   const issues = await sprintIssues(sp.id);
   const total = issues.reduce((s, i) => s + points(i), 0);
   const remainingNow = issues.filter((i) => !isDone(i)).reduce((s, i) => s + points(i), 0);
-  const start = new Date(sp.startDate), end = new Date(sp.endDate);
+  const start = sp.startDate ? new Date(sp.startDate) : now;
+  const end = sp.endDate ? new Date(sp.endDate) : new Date(+start + 14 * dayMs);
   const length = Math.max(1, Math.round((end - start) / dayMs));
   const day = Math.min(length, Math.max(0, Math.floor((now - start) / dayMs)));
 
@@ -214,6 +224,7 @@ async function main() {
     sprint: {
       number: Number(String(sp.name).match(/(\d+)\s*$/)?.[1]) || sp.id,
       goal: sp.goal || sp.name,
+      state: sprintState,
       day, length, total, remaining
     },
     velocity, roadmap, milestones: upcoming, releases, health
